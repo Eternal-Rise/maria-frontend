@@ -1,6 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import { Configuration } from '@nuxt/types';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const config: Configuration = {
   mode: 'universal',
   /*
@@ -57,8 +59,9 @@ const config: Configuration = {
       bootstrapVueCSS: false,
     }],
     // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/auth',
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
+    // '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
@@ -72,20 +75,19 @@ const config: Configuration = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    host:
-      process.env.NODE_ENV === 'development'
-        ? 'localhost'
-        : 'api.maria.saliuk.com',
-    port: process.env.NODE_ENV === 'development' ? '3000' : '443',
-    https: true,
     credentials: false,
+    host: isDev ? 'localhost' : 'api.saliuk.com',
+    https: true,
+    port: isDev ? '3000' : '443',
+    prefix: '/maria',
   },
 
   auth: {
     redirect: {
-      login: '/',
-      logout: '/',
-      callback: '/',
+      home: '/',
+      login: '/sign-in',
+      logout: '/sign-in',
+      callback: '/sign-in',
     },
     strategies: {
       local: {
@@ -104,6 +106,9 @@ const config: Configuration = {
     },
   },
 
+  router: {
+    middleware: ['auth'],
+  },
   /*
   ** Build configuration
   */

@@ -24,7 +24,10 @@
     "types": [
       "@nuxt/types",
       "@nuxtjs/axios",
+      "@types/node",
       "@types/nuxtjs__auth",
+      "webpack",
+      "webpack-env"
     ]
   }
 }
