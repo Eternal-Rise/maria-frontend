@@ -1,9 +1,19 @@
-html, body {
+html,
+body {
   @media screen and (min-width: $lg) {
     font-size: 1.125rem;
   }
 
   @media screen and (min-width: $xxl) {
-    font-size: 1.25rem
+    font-size: 1.25rem;
   }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.vh {
+  min-height: 100vh;
 }

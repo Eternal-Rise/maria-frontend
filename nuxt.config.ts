@@ -33,6 +33,7 @@ const config: Configuration = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/vue-easy-lightbox', ssr: false },
   ],
   /*
   ** Nuxt.js dev-modules
@@ -63,13 +64,9 @@ const config: Configuration = {
     '@nuxtjs/axios',
     // '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/style-resources',
   ],
-
-  styleResources: {
-    scss: ['./assets/styles/_variables.scss'],
-  },
-
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -104,6 +101,10 @@ const config: Configuration = {
         tokenType: 'bearer',
       },
     },
+  },
+
+  styleResources: {
+    scss: ['./assets/styles/_variables.scss'],
   },
 
   router: {

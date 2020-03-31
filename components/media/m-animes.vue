@@ -1,14 +1,14 @@
 <template>
   <b-table :items="animes" :fields="fields">
-    <template v-slot:cell(title)="{ item: { link, title} }">
-      <nuxt-link v-if="link && link !== ''" v-text="title" :to="link" />
+    <template v-slot:cell(title)="{ item: { link, title } }">
+      <b-link v-if="link && link !== ''" v-text="title" :href="link" />
       <template v-else>
         {{ title }}
       </template>
     </template>
 
     <template v-slot:cell(duration)="{ item: { duration } }">
-      {{ formatDuration(duration)}}
+      {{ formatDuration(duration) }}
     </template>
 
     <template v-slot:cell(genre)="{ item: { genre } }">
@@ -16,36 +16,23 @@
     </template>
 
     <template v-slot:cell(actions)="{ item: { _id: id } }">
-      <b-button-group>
-        <b-button>
-          <b-icon icon="eye" />
-        </b-button>
-        <b-button>
-          <b-icon icon="pencil" />
-        </b-button>
-        <b-button>
-          <b-icon icon="trash" />
-        </b-button>
-      </b-button-group>
+      <crud-buttons :id="id" media="anime" />
     </template>
   </b-table>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { BIcon, BIconPencil, BIconTrash, BIconEye } from 'bootstrap-vue';
 import { formatDuration } from '~/helpers/formaters';
+import CrudButtons from '~/components/helpers/crud-buttons.vue';
 
 @Component({
   components: {
-    BIcon,
-    BIconEye,
-    BIconPencil,
-    BIconTrash,
-  }
+    CrudButtons,
+  },
 })
 export default class MAnimes extends Vue {
-  @Prop({ required: true, type: Array})
+  @Prop({ required: true, type: Array })
   animes!: any[];
 
   fields: any[] = [

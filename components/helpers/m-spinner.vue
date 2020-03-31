@@ -3,8 +3,8 @@
     <div v-if="loading" class="m-spinner__wrapp">
       <b-spinner variant="primary" />
     </div>
-    <div :class="loading ? '_loading' : ''" class="m-spinner__content">
-      <slot></slot>
+    <div :class="['m-spinner__content', { _loading: loading }]">
+      <slot />
     </div>
   </div>
 </template>
@@ -13,13 +13,13 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class NSpinner extends Vue {
+export default class MSpinner extends Vue {
   @Prop({ required: true, type: Boolean })
   readonly loading!: boolean;
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .m-spinner {
   // for spinner
   position: relative;
