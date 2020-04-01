@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { IAnime } from '~/helpers/interfaces';
+import { IMedia, IMediaSerial, IMediaTypes } from '~/helpers/interfaces';
 import CrudButtons from '~/components/helpers/crud-buttons.vue';
 
 @Component({
@@ -52,10 +52,10 @@ import CrudButtons from '~/components/helpers/crud-buttons.vue';
 })
 export default class Index extends Vue {
   @Prop({ default: {}, required: true, type: Object })
-  media!: IAnime;
+  media!: IMedia | IMediaSerial;
 
   @Prop({ required: true, type: String })
-  mediaType!: string;
+  mediaType!: IMediaTypes;
 
   lightbox: boolean = false;
 

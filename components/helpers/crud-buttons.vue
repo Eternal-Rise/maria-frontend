@@ -1,6 +1,6 @@
 <template>
   <b-button-group>
-    <b-button :to="{ name: `${media}-id-edit`, params: { id } }">
+    <b-button :to="{ name: `media-id-edit`, params: { id, media } }">
       <b-icon icon="pencil" />
     </b-button>
     <b-button @click="handleDelete">
@@ -30,6 +30,10 @@ export default class CrudButtons extends Vue {
 
   handleDelete() {
     console.warn(`You are proceed to delete some ${this.media}`);
+    this.$axios({
+      method: 'delete',
+      url: `/maria/${this.media}/${this.id}`,
+    });
   }
 }
 </script>

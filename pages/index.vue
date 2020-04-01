@@ -4,45 +4,53 @@
       <b-col lg="8" class="mb-3">
         <b-button-group class="w-100">
           <b-button v-b-toggle.anime class="w-100" variant="outline-primary">Anime</b-button>
-          <b-button :to="{ name: 'anime-add' }" style="font-size: 1.2rem" variant="primary">
+          <b-button :to="{ name: 'media-add', params: { media: 'anime' } }" style="font-size: 1.2rem" variant="primary">
             <b-icon icon="plus" />
           </b-button>
         </b-button-group>
         <b-collapse id="anime" class="pt-3">
-          <media-view v-for="(anime, i) of animes" :key="i" :media="anime" media-type="anime" />
+          <media-list :list="animes" media-type="anime" />
         </b-collapse>
       </b-col>
       <b-col lg="8" class="mb-3">
         <b-button-group class="w-100">
           <b-button v-b-toggle.anime-serials class="w-100" variant="outline-primary">Anime Serials</b-button>
-          <b-button :to="{ name: 'anime-serials-add' }" style="font-size: 1.2rem" variant="primary">
+          <b-button
+            :to="{ name: 'media-add', params: { media: 'anime-serial' } }"
+            style="font-size: 1.2rem"
+            variant="primary"
+          >
             <b-icon icon="plus" />
           </b-button>
         </b-button-group>
         <b-collapse id="anime-serials">
-          ANIME SERIALS
+          <media-list :list="animeSerials" media-type="anime-serial" />
         </b-collapse>
       </b-col>
       <b-col lg="8" class="mb-3">
         <b-button-group class="w-100">
           <b-button v-b-toggle.films class="w-100" variant="outline-primary">Films</b-button>
-          <b-button :to="{ name: 'films-add' }" style="font-size: 1.2rem" variant="primary">
+          <b-button :to="{ name: 'media-add', params: { media: 'film' } }" style="font-size: 1.2rem" variant="primary">
             <b-icon icon="plus" />
           </b-button>
         </b-button-group>
         <b-collapse id="films">
-          FILMS
+          <media-list :list="films" media-type="film" />
         </b-collapse>
       </b-col>
       <b-col lg="8" class="mb-3">
         <b-button-group class="w-100">
           <b-button v-b-toggle.serials class="w-100" variant="outline-primary">Serials</b-button>
-          <b-button :to="{ name: 'serials-add' }" style="font-size: 1.2rem" variant="primary">
+          <b-button
+            :to="{ name: 'media-add', params: { media: 'serial' } }"
+            style="font-size: 1.2rem"
+            variant="primary"
+          >
             <b-icon icon="plus" />
           </b-button>
         </b-button-group>
         <b-collapse id="serials">
-          SERIALS
+          <media-list :list="serials" media-type="serial" />
         </b-collapse>
       </b-col>
     </b-row>
@@ -53,14 +61,14 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { BIcon, BIconPlus } from 'bootstrap-vue';
 import MSpinner from '~/components/helpers/m-spinner.vue';
-import MediaView from '~/components/media/media-view.vue';
+import MediaList from '~/components/media/media-list.vue';
 
 @Component({
   components: {
     BIcon,
     BIconPlus,
     MSpinner,
-    MediaView,
+    MediaList,
   },
 })
 export default class Index extends Vue {

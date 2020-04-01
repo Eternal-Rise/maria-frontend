@@ -6,7 +6,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class AnimeSerial extends Vue {}
+export default class Media extends Vue {}
 </script>
 
 <style lang="scss" scoped></style>

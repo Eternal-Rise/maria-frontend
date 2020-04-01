@@ -77,7 +77,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import MSpinner from '~/components/helpers/m-spinner.vue';
-import { IAnime } from '~/helpers/interfaces';
+import { IMedia } from '~/helpers/interfaces';
 
 @Component({
   components: {
@@ -85,7 +85,7 @@ import { IAnime } from '~/helpers/interfaces';
   },
 })
 export default class AnimeForm extends Vue {
-  form: IAnime = this.newForm();
+  form: IMedia = this.newForm();
   languagies: string[] = ['Ukrainian', 'English', 'Russian'];
   loading: boolean = false;
 
@@ -142,7 +142,7 @@ export default class AnimeForm extends Vue {
     }
   }
 
-  newForm(): IAnime {
+  newForm(): IMedia {
     return {
       description: '',
       director: '',
