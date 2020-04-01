@@ -23,7 +23,7 @@
             <b-icon icon="plus" />
           </b-button>
         </b-button-group>
-        <b-collapse id="anime-serials">
+        <b-collapse id="anime-serials" class="pt-3">
           <media-list :list="animeSerials" media-type="anime-serial" />
         </b-collapse>
       </b-col>
@@ -34,7 +34,7 @@
             <b-icon icon="plus" />
           </b-button>
         </b-button-group>
-        <b-collapse id="films">
+        <b-collapse id="films" class="pt-3">
           <media-list :list="films" media-type="film" />
         </b-collapse>
       </b-col>
@@ -49,7 +49,7 @@
             <b-icon icon="plus" />
           </b-button>
         </b-button-group>
-        <b-collapse id="serials">
+        <b-collapse id="serials" class="pt-3">
           <media-list :list="serials" media-type="serial" />
         </b-collapse>
       </b-col>

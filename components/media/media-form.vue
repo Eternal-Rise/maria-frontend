@@ -8,18 +8,17 @@
           </b-form-group>
 
           <b-form-group label="Duration (in minutes)">
-            <b-form-input v-model.number="form.duration" type="number" required />
+            <b-form-input v-model.number="form.duration" type="number" />
           </b-form-group>
 
           <b-form-group label="Genre">
             <!-- prop `add-on-change` is needed to enable adding tags vie the `change` event -->
             <b-form-tags
               v-model="form.genre"
-              :disabled="form.genre.length >= 4"
+              :disabled="form.genre && form.genre.length >= 4"
               add-on-change
-              class="p-0 border-0"
+              class="bg-transparent border-0 p-0"
               no-outer-focus
-              @input="handleSelectGenre"
             >
               <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
                 <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
@@ -32,7 +31,7 @@
                 <b-form-select
                   v-bind="inputAttrs"
                   v-on="inputHandlers"
-                  :disabled="form.genre.length >= 4 || availableGenres().length === 0"
+                  :disabled="disabled || availableGenres().length === 0"
                   :options="availableGenres()"
                 >
                   <template v-slot:first>
@@ -102,7 +101,6 @@
                     button-only
                     hide-header
                     right
-                    @input="handleDateChange"
                   />
                 </b-input-group-append>
               </b-input-group>
@@ -169,7 +167,6 @@ export default class AnimeForm extends Vue {
   }
 
   get mediaType(): string {
-    console.log(this.$route.params.media);
     return this.$route.params.media || '';
   }
 
@@ -195,18 +192,17 @@ export default class AnimeForm extends Vue {
       data: this.preparedForm,
     })
       .then(() => {
-        this.form = this.newForm(this.mediaType);
+        const newForm: any = this.newForm();
+
+        for (const [key, value] of Object.entries(newForm)) {
+          this.$set(this.form, key, newForm[key]);
+        }
       })
       .finally(() => {
         setTimeout(() => {
           this.loading = false;
-          this.$forceUpdate();
         }, 200);
       });
-  }
-
-  handleDateChange(...val: any[]) {
-    console.log(val);
   }
 
   handleEdit() {
@@ -219,13 +215,8 @@ export default class AnimeForm extends Vue {
       .finally(() => {
         setTimeout(() => {
           this.loading = false;
-          this.$forceUpdate();
         }, 200);
       });
-  }
-
-  handleSelectGenre() {
-    console.log(this.form.genre);
   }
 
   handleSubmit() {
@@ -236,7 +227,7 @@ export default class AnimeForm extends Vue {
     }
   }
 
-  newForm(mediaType: string): IMediaType {
+  newForm(): IMediaType {
     const media: IMedia = {
       description: '',
       director: '',
@@ -255,7 +246,7 @@ export default class AnimeForm extends Vue {
     const mediaSerial: IMediaSerial = {
       ...media,
       season: 1,
-      seasonsAmount: undefined,
+      seasonsAmount: 1,
       seriesInSeason: 1,
       toWatch: 1,
     };
@@ -264,7 +255,7 @@ export default class AnimeForm extends Vue {
   }
 
   created() {
-    this.form = this.newForm(this.mediaType);
+    this.form = this.newForm();
   }
 
   mounted() {
@@ -277,8 +268,11 @@ export default class AnimeForm extends Vue {
       })
         .then(({ data }: any) => {
           if (data) {
-            const { _id, __v, createdAt, owner, updatedAt, ...anime } = data;
-            this.form = anime;
+            const { _id, __v, createdAt, owner, updatedAt, ...media } = data;
+
+            for (const [key, value] of Object.entries(media)) {
+              this.$set(this.form, key, media[key]);
+            }
           }
         })
         .finally(() => {
