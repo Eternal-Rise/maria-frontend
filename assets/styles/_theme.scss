@@ -1,6 +1,9 @@
 // Redefine default bootstrap variables
 
-$blue:    #4ddfbf !default;
+$white: #fff;
+$black: #1d1a25;
+
+$blue: #4ddfbf !default;
 // $indigo:  #6610f2 !default;
 // $purple:  #6f42c1 !default;
 // $pink:    #e83e8c !default;
@@ -34,13 +37,14 @@ $container-max-widths: (
 );
 
 $grid-gutter-width: 1.875rem;
-$form-grid-gutter-width: .625rem;
+$form-grid-gutter-width: 0.625rem;
 
 $modal-xl: 71.25rem;
 $modal-lg: 50rem;
 $modal-md: 31.25rem;
 // $modal-sm: 300px !default;
 
-$font-family-sans-serif: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-family-sans-serif: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  'Helvetica Neue', Arial, sans-serif;
 
 $enable-responsive-font-sizes: true;

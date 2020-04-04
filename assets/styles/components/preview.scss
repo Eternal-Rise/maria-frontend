@@ -1,14 +1,49 @@
 .preview {
+  &__description {
+    font-size: 0.9em;
+    white-space: pre-wrap;
+  }
+
+  &__label {
+    color: lighten($color: $blue, $amount: 20%);
+    font-size: 0.8em;
+  }
+
+  &__link {
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
   &__poster {
     cursor: zoom-in;
   }
 
-  &__release-date {
-  }
+  .grid {
+    background-color: $white;
+    border: 1px solid $white;
+    display: grid;
+    gap: 1px;
+    grid-template-columns: repeat(12, 1fr);
 
-  &__duration {
-  }
+    &__tile {
+      background-color: $body-bg;
+      line-height: 2.1;
+      padding: 0 $spacer / 2;
 
-  &__numbers {
+      &._3 {
+        grid-column: span 3;
+      }
+
+      &._4 {
+        grid-column: span 4;
+      }
+
+      &._12 {
+        grid-column: span 12;
+      }
+    }
   }
 }

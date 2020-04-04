@@ -21,3 +21,8 @@ export interface IMediaSerial extends IMedia {
 
 export type IMediaTypes = 'anime' | 'anime-serial' | 'film' | 'serial';
 export type IMediaType = IMedia | IMediaSerial;
+
+export interface IUser {
+  _id: string;
+  username: string;
+}

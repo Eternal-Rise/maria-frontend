@@ -12,7 +12,10 @@ import { MEDIA_ALL_TYPES } from '~/helpers/constants';
     MediaForm,
   },
   validate({ params }) {
-    return (MEDIA_ALL_TYPES as string[]).includes(params.media);
+    const isValidMedia = (MEDIA_ALL_TYPES as string[]).includes(params.media);
+    const isValidId = /[\da-fA-F]{24}/.test(params.id);
+
+    return isValidMedia && isValidId;
   },
 })
 export default class Edit extends Vue {}
