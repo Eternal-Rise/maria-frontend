@@ -1,5 +1,6 @@
 
 export interface IMedia {
+  _id?: string;
   description?: string;
   director?: string;
   duration: number;
@@ -19,8 +20,21 @@ export interface IMediaSerial extends IMedia {
   toWatch: number;
 }
 
+export interface IMediaDelete {
+  media: IMediaAny;
+  mediaType: IMediaTypes;
+}
+export type IMediaAny = IMedia | IMediaSerial;
+
+
+export interface iMediaBulk {
+  list: IMediaAny[];
+  mediaType: IMediaTypes;
+  title: string;
+}
+
+
 export type IMediaTypes = 'anime' | 'anime-serial' | 'film' | 'serial';
-export type IMediaType = IMedia | IMediaSerial;
 
 export interface IUser {
   _id: string;

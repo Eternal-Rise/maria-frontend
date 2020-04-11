@@ -46,7 +46,6 @@
                     button-only
                     hide-header
                     right
-                    @input="handleDateChange"
                   />
                 </b-input-group-append>
               </b-input-group>
@@ -98,7 +97,6 @@ export default class AnimeForm extends Vue {
   }
 
   handleCreate() {
-    console.log(this.form);
     this.loading = true;
 
     this.$axios({
@@ -114,10 +112,6 @@ export default class AnimeForm extends Vue {
           this.loading = false;
         }, 200);
       });
-  }
-
-  handleDateChange(...val: any[]) {
-    console.log(val);
   }
 
   handleEdit() {

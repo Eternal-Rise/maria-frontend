@@ -23,7 +23,7 @@
               <template v-slot="{ tags, inputAttrs, inputHandlers, disabled, removeTag }">
                 <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
                   <li v-for="tag in tags" :key="tag" class="list-inline-item">
-                    <b-form-tag @remove="removeTag(tag)" :title="tag" :disabled="disabled" variant="info">
+                    <b-form-tag @remove="removeTag(tag)" :title="tag" variant="info">
                       {{ tag }}
                     </b-form-tag>
                   </li>
@@ -31,7 +31,7 @@
                 <b-form-select
                   v-bind="inputAttrs"
                   v-on="inputHandlers"
-                  :disabled="disabled || availableGenres().length === 0"
+                  :disabled="(form.genre && form.genre.length >= 4) || availableGenres().length === 0"
                   :options="availableGenres()"
                 >
                   <template v-slot:first>
@@ -127,7 +127,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import MSpinner from '~/components/helpers/m-spinner.vue';
-import { IMedia, IMediaSerial, IMediaType } from '~/helpers/interfaces';
+import { IMedia, IMediaSerial, IMediaAny } from '~/helpers/interfaces';
 import { MEDIA_SERIAL_TYPES } from '../../helpers/constants';
 import { GENRES } from '~/helpers/constants';
 
@@ -142,11 +142,19 @@ export default class AnimeForm extends Vue {
   loading: boolean = false;
   genres: string[] = GENRES;
 
-  get form(): IMediaType {
+  get form(): IMediaAny {
     return this.media;
   }
 
-  set form(form: IMediaType) {
+  get friend() {
+    const friends = this.$auth.user && this.$auth.user.friends.list;
+
+    if (friends && friends.length) {
+      return friends.find((friend: any) => friend.username === this.$route.params.friend);
+    }
+  }
+
+  set form(form: IMediaAny) {
     this.media = form;
   }
 
@@ -155,7 +163,11 @@ export default class AnimeForm extends Vue {
   }
 
   get url(): string {
-    return `/media/${this.mediaType}s`;
+    if (this.friend && this.friend._id) {
+      return `/media/${this.friend._id}/${this.mediaType}s`;
+    } else {
+      return `/media/${this.mediaType}s`;
+    }
   }
 
   get idUrl(): string {
@@ -170,12 +182,12 @@ export default class AnimeForm extends Vue {
     return this.$route.params.media || '';
   }
 
-  get preparedForm(): IMediaType {
+  preparedForm(): IMediaAny {
     const { genre, ...preparedForm } = this.form;
 
-    (preparedForm as IMediaType).genre = genre.sort();
+    (preparedForm as IMediaAny).genre = genre.sort();
 
-    return preparedForm as IMediaType;
+    return preparedForm as IMediaAny;
   }
 
   availableGenres() {
@@ -183,15 +195,20 @@ export default class AnimeForm extends Vue {
   }
 
   handleCreate() {
-    console.log(this.form);
     this.loading = true;
 
     this.$axios({
       method: 'post',
       url: this.url,
-      data: this.preparedForm,
+      data: this.preparedForm(),
     })
-      .then(() => {
+      .then(({ data }) => {
+        this.$bvToast.toast(`You added ${data.title} to watch list`, {
+          title: 'Success',
+          variant: 'success',
+          solid: true,
+        });
+
         const newForm: any = this.newForm();
 
         for (const [key, value] of Object.entries(newForm)) {
@@ -209,9 +226,15 @@ export default class AnimeForm extends Vue {
     this.$axios({
       method: 'put',
       url: this.idUrl,
-      data: this.preparedForm,
+      data: this.preparedForm(),
     })
-      .then(() => {})
+      .then(({ data }: any) => {
+        this.$bvToast.toast(`You have update ${data.title}`, {
+          title: 'Success',
+          variant: 'success',
+          solid: true,
+        });
+      })
       .finally(() => {
         setTimeout(() => {
           this.loading = false;
@@ -227,7 +250,7 @@ export default class AnimeForm extends Vue {
     }
   }
 
-  newForm(): IMediaType {
+  newForm(): IMediaAny {
     const media: IMedia = {
       description: '',
       director: '',

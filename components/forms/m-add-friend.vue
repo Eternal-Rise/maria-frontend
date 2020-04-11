@@ -31,7 +31,6 @@ export default class MAddFriend extends Vue {
         this.$auth.fetchUser();
       })
       .catch(({ response: { data: err } }) => {
-        console.log({ ...err });
         let message!: string;
 
         if (err.statusCode === 404) {

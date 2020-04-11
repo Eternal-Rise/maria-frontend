@@ -1,8 +1,14 @@
 <template>
   <m-spinner :loading="loading">
     <b-row class="align-items-center flex-column">
-      <b-col v-for="item of media" :key="item.type" lg="8" class="mb-3">
-        <media-list :list="item.list" :title="item.title" :type="item.type" controls />
+      <b-col v-for="item of media" :key="item.mediaType" lg="8" class="mb-3">
+        <media-list
+          :list="item.list"
+          :title="item.title"
+          :media-type="item.mediaType"
+          controls
+          @delete="handleDelete"
+        />
       </b-col>
     </b-row>
   </m-spinner>
@@ -12,6 +18,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import MSpinner from '~/components/helpers/m-spinner.vue';
 import MediaList from '~/components/media/media-list.vue';
+import { IMediaDelete, IMediaAny, iMediaBulk } from '~/helpers/interfaces';
 
 @Component({
   components: {
@@ -21,12 +28,26 @@ import MediaList from '~/components/media/media-list.vue';
 })
 export default class Index extends Vue {
   loading: boolean = true;
-  media: any[] = [
-    { list: [], title: 'Anime Serials', type: 'anime-serial' },
-    { list: [], title: 'Anime', type: 'anime' },
-    { list: [], title: 'Films', type: 'film' },
-    { list: [], title: 'Serials', type: 'serial' },
+  media: iMediaBulk[] = [
+    { list: [], title: 'Anime Serials', mediaType: 'anime-serial' },
+    { list: [], title: 'Anime', mediaType: 'anime' },
+    { list: [], title: 'Films', mediaType: 'film' },
+    { list: [], title: 'Serials', mediaType: 'serial' },
   ];
+
+  handleDelete({ media, mediaType }: IMediaDelete): void {
+    const i = this.media.findIndex(m => m.mediaType === mediaType);
+
+    if (i >= 0) {
+      this.media[i].list = this.media[i].list.filter(m => m._id !== media._id);
+
+      this.$bvToast.toast(`You have deleted ${media.title}`, {
+        title: 'Success',
+        variant: 'success',
+        solid: true,
+      });
+    }
+  }
 
   mounted() {
     const animeSerials = this.$axios.$get('/media/anime-serials');

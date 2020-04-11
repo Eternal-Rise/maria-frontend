@@ -2,10 +2,10 @@
   <m-spinner :loading="loading">
     <b-form @submit.prevent="handleSubmit">
       <b-form-group label="Username">
-        <b-form-input v-model.trim="form.username" type="text" required/>
+        <b-form-input v-model.trim="form.username" type="text" required />
       </b-form-group>
       <b-form-group label="Password">
-        <b-form-input v-model.trim="form.password" minlength="8" type="password" required/>
+        <b-form-input v-model.trim="form.password" minlength="8" type="password" required />
       </b-form-group>
 
       <b-alert :show="error" variant="danger">
@@ -42,11 +42,11 @@ export default class MSignIn extends Vue {
   handleSubmit() {
     this.loading = true;
 
-    this.$auth.loginWith('local', {
-      data: this.form,
-    })
+    this.$auth
+      .loginWith('local', {
+        data: this.form,
+      })
       .catch((err: any) => {
-        console.log('ERROR', err);
         this.error = true;
       })
       .then(() => {

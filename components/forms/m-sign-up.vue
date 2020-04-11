@@ -58,7 +58,6 @@ export default class MSignUp extends Vue {
       data: this.form,
     })
       .catch((err: any) => {
-        console.log(err, err.error);
         const message = err && err.constraints && err.constraints.alreadyExist;
         if (message) {
           this.error.status = true;

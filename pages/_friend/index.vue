@@ -2,8 +2,15 @@
   <m-spinner :loading="loading">
     <b-alert :show="error" variant="danger">Unauthorized</b-alert>
     <b-row v-if="!error" class="align-items-center flex-column">
-      <b-col v-for="item of media" :key="item.type" lg="8" class="mb-3">
-        <media-list :list="item.list" :title="item.title" :type="item.type" />
+      <b-col v-for="item of media" :key="item.mediaType" lg="8" class="mb-3">
+        <media-list
+          :list="item.list"
+          :title="item.title"
+          :media-type="item.mediaType"
+          :friend="friend"
+          controls
+          @delete="handleDelete"
+        />
       </b-col>
     </b-row>
   </m-spinner>
@@ -13,6 +20,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import MSpinner from '~/components/helpers/m-spinner.vue';
 import MediaList from '~/components/media/media-list.vue';
+import { IMediaDelete, iMediaBulk } from '~/helpers/interfaces';
 
 @Component({
   components: {
@@ -23,17 +31,34 @@ import MediaList from '~/components/media/media-list.vue';
 export default class Index extends Vue {
   error: boolean = false;
   loading: boolean = true;
-  media: any[] = [
-    { list: [], title: 'Anime Serials', type: 'anime-serial' },
-    { list: [], title: 'Anime', type: 'anime' },
-    { list: [], title: 'Films', type: 'film' },
-    { list: [], title: 'Serials', type: 'serial' },
+  media: iMediaBulk[] = [
+    { list: [], title: 'Anime Serials', mediaType: 'anime-serial' },
+    { list: [], title: 'Anime', mediaType: 'anime' },
+    { list: [], title: 'Films', mediaType: 'film' },
+    { list: [], title: 'Serials', mediaType: 'serial' },
   ];
 
   get friend() {
-    const friends = this.$auth.user.friends.list;
+    const friends = this.$auth.user && this.$auth.user.friends.list;
 
-    return friends.find((friend: any) => friend.username === this.$route.params.friend);
+    if (friends && friends.length) {
+      return friends.find((friend: any) => friend.username === this.$route.params.friend);
+    }
+  }
+
+  // TODO: fix bug, when delete lastone
+  handleDelete({ media, mediaType }: IMediaDelete): void {
+    const i = this.media.findIndex(m => m.mediaType === mediaType);
+
+    if (i >= 0) {
+      this.media[i].list = this.media[i].list.filter(m => m._id !== media._id);
+
+      this.$bvToast.toast(`You have deleted ${media.title}`, {
+        title: 'Success',
+        variant: 'success',
+        solid: true,
+      });
+    }
   }
 
   mounted() {
@@ -45,7 +70,6 @@ export default class Index extends Vue {
 
       Promise.all([animeSerials, animes, films, serials])
         .then(([animeSerials, animes, films, serials]) => {
-          console.log(animeSerials);
           this.media[0].list = animeSerials;
           this.media[1].list = animes;
           this.media[2].list = films;
