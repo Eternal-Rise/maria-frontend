@@ -73,7 +73,7 @@ const config: Configuration = {
   */
   axios: {
     credentials: false,
-    host: isDev ? 'localhost' : 'api.saliuk.com',
+    host: isDev ? 'localhost' : 'saliuk.herokuapp.com',
     https: true,
     port: isDev ? '3000' : '443',
     prefix: '/maria',
