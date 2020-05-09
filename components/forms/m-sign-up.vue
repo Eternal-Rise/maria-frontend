@@ -54,7 +54,7 @@ export default class MSignUp extends Vue {
 
     this.$axios({
       method: 'post',
-      url: '/maria/auth',
+      url: '/auth',
       data: this.form,
     })
       .catch((err: any) => {

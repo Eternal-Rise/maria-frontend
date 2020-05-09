@@ -17,3 +17,9 @@ img {
 .vh {
   min-height: 100vh;
 }
+
+.item-mb-1 {
+  &:not(:last-child) {
+    margin-bottom: 0.25rem;
+  }
+}

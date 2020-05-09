@@ -1,26 +1,27 @@
 <template>
   <m-spinner :loading="loading">
     <b-alert :show="error" variant="danger">Unauthorized</b-alert>
-    <b-row v-if="!error" class="align-items-center flex-column">
-      <b-col v-for="item of media" :key="item.mediaType" lg="8" class="mb-3">
-        <media-list
-          :list="item.list"
-          :title="item.title"
-          :media-type="item.mediaType"
-          :friend="friend"
-          controls
-          @delete="handleDelete"
-        />
-      </b-col>
-    </b-row>
+    <template v-if="!error">
+      <media-list
+        v-for="item of media"
+        :key="item.mediaType"
+        :list="item.list"
+        :title="item.title"
+        :media-type="item.mediaType"
+        :friend="friend"
+        class="mb-3"
+        controls
+        @delete="handleDelete"
+      />
+    </template>
   </m-spinner>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { IMediaDelete, iMediaBulk } from '~/helpers/interfaces';
 import MSpinner from '~/components/helpers/m-spinner.vue';
 import MediaList from '~/components/media/media-list.vue';
-import { IMediaDelete, iMediaBulk } from '~/helpers/interfaces';
 
 @Component({
   components: {

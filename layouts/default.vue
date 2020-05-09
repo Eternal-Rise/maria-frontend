@@ -1,7 +1,14 @@
 <template>
-  <b-container class="py-3 vh">
-    <m-nav />
-    <nuxt />
+  <b-container class="d-flex py-3 vh">
+    <b-row style="flex: 1">
+      <b-col cols="2" class="d-flex">
+        <m-nav style="flex: 1" />
+      </b-col>
+      <b-col cols="8">
+        <nuxt />
+      </b-col>
+      <b-col cols="2" />
+    </b-row>
   </b-container>
 </template>
 

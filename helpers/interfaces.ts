@@ -40,3 +40,8 @@ export interface IUser {
   _id: string;
   username: string;
 }
+
+export interface IProfile {
+  email: string;
+  username: string;
+}

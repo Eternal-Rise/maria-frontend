@@ -1,16 +1,15 @@
 <template>
   <m-spinner :loading="loading">
-    <b-row class="align-items-center flex-column">
-      <b-col v-for="item of media" :key="item.mediaType" lg="8" class="mb-3">
-        <media-list
-          :list="item.list"
-          :title="item.title"
-          :media-type="item.mediaType"
-          controls
-          @delete="handleDelete"
-        />
-      </b-col>
-    </b-row>
+    <media-list
+      v-for="item of media"
+      :key="item.mediaType"
+      :list="item.list"
+      :media-type="item.mediaType"
+      :title="item.title"
+      class="mb-3"
+      controls
+      @delete="handleDelete"
+    />
   </m-spinner>
 </template>
 

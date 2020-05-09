@@ -1,6 +1,6 @@
 <template>
   <b-row class="justify-content-center">
-    <b-col md="8" lg="6" xl="4">
+    <b-col md="10" lg="8" xl="6">
       <m-spinner :loading="loading">
         <b-form @submit.prevent="handleSubmit">
           <b-form-group label="Title">
