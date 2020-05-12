@@ -1,10 +1,9 @@
 <template>
   <b-container>
     <b-row class="align-items-end justify-content-center py-5 header">
-      <nuxt-logo/>
+      <nuxt-logo />
       <h1 class="lead-title m-0 mx-5">Maria</h1>
     </b-row>
-
     <nuxt />
   </b-container>
 </template>
@@ -18,8 +17,7 @@ import NuxtLogo from '~/components/nuxt-logo.vue';
     NuxtLogo,
   },
 })
-export default class Index extends Vue {
-}
+export default class Index extends Vue {}
 </script>
 
 <style lang="scss">

@@ -1,0 +1,125 @@
+// .list__item
+.list-header {
+  background-color: $body-bg;
+  border-bottom: 4px solid $primary;
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: bold;
+  justify-content: space-evenly;
+  padding: 0.5rem 0;
+  text-transform: capitalize;
+
+  @media screen and (min-width: $md) {
+    width: 100%;
+  }
+
+  @media screen and (min-width: $xl) {
+    justify-content: initial;
+  }
+
+  &__block {
+    box-sizing: border-box;
+    line-height: 1.85;
+
+    @media screen and (min-width: $xl) {
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+
+    &._title {
+      @media screen and (min-width: $xl) {
+        display: flex;
+        justify-content: flex-end;
+        width: 40%;
+      }
+    }
+
+    &._duration,
+    &._year,
+    &._watch {
+      @media screen and (min-width: $xl) {
+        display: flex;
+        justify-content: center;
+        width: 12%;
+      }
+    }
+
+    &._genres {
+      display: none;
+      width: 50%;
+
+      @media screen and (min-width: $sm) {
+        width: initial;
+      }
+
+      @media screen and (min-width: $xl) {
+        display: flex;
+        justify-content: flex-start;
+        margin-right: auto;
+        width: initial;
+      }
+    }
+  }
+
+  &__title {
+    background-color: transparent;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    color: inherit;
+    font: inherit;
+    outline: none;
+    padding: 0.5rem 1.75rem 0.5rem 0.5rem;
+    position: relative;
+    text-align: right;
+    text-transform: capitalize;
+    transition: $dur;
+    width: 100%;
+
+    @media screen and (min-width: $xl) {
+      width: initial;
+    }
+
+    &._sorter {
+      cursor: pointer;
+
+      // .list__item-sort
+      &:focus,
+      &:hover {
+        border-color: $white;
+      }
+
+      &::before,
+      &::after {
+        opacity: 0.5;
+        position: absolute;
+        right: 0.3rem;
+        transition: $dur;
+      }
+
+      &::before {
+        content: '▲';
+        top: 0;
+        transform: translateY(12%) scale(0.75, 0.25);
+      }
+
+      &::after {
+        bottom: 0;
+        content: '▼';
+        transform: translateY(-12%) scale(0.75, 0.25);
+      }
+
+      &._top {
+        &::before {
+          opacity: 1;
+        }
+      }
+
+      &._bottom {
+        &::after {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

@@ -4,6 +4,10 @@ import { Configuration } from '@nuxt/types';
 const isDev = process.env.NODE_ENV === 'development';
 
 const config: Configuration = {
+  generate: {
+    fallback: true,
+  },
+
   mode: 'universal',
   /*
   ** Headers of the page
@@ -44,6 +48,7 @@ const config: Configuration = {
       typeCheck: true,
       ignoreNotFoundWarnings: true
     }],
+    '@nuxtjs/netlify-files',
   ],
 
   server: {
@@ -120,10 +125,20 @@ const config: Configuration = {
         ["@babel/plugin-proposal-class-properties", { loose: true }]
       ]
     },
+
+    // fixed netlify deploy
+    // https://github.com/nuxt/nuxt.js/issues/5800#issuecomment-597009572
+    html: {
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+      },
+    },
     /*
     ** You can extend webpack config here
     */
     extend(config, ctx) {
+      //
     }
   }
 };

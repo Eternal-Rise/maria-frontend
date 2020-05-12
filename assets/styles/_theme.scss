@@ -3,7 +3,7 @@
 $white: #fff;
 $black: #1d1a25;
 
-$blue: #4ddfbf !default;
+$blue: #4ddfbf;
 // $indigo:  #6610f2 !default;
 // $purple:  #6f42c1 !default;
 // $pink:    #e83e8c !default;
@@ -28,10 +28,10 @@ $grid-breakpoints: (
 );
 
 $container-max-widths: (
-  sm: 33.75rem,
-  md: 45rem,
-  lg: 60rem,
-  xl: 71.25rem,
+  sm: 55rem,
+  md: 60rem,
+  lg: 65rem,
+  xl: 80rem,
   xxl: 112.5rem,
   xxxl: 146.25rem,
 );

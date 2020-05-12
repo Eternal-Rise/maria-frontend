@@ -1,23 +1,20 @@
 
 export interface IMedia {
   _id?: string;
-  description?: string;
-  director?: string;
-  duration: number;
-  genre: string[];
+  duration?: number;
+  genres: string[];
   link?: string;
-  linkLang?: string;
-  poster?: string;
-  releaseDate?: string | null;
   title: string;
   watched: boolean;
+  year?: number | string;
+
+  [key: string]: any;
 }
 
 export interface IMediaSerial extends IMedia {
-  season: number;
-  seasonsAmount?: number;
-  seriesInSeason: number;
-  toWatch: number;
+  seasons: number[],
+  totalSeries: number;
+  toWatch: string;
 }
 
 export interface IMediaDelete {
@@ -34,7 +31,7 @@ export interface iMediaBulk {
 }
 
 
-export type IMediaTypes = 'anime' | 'anime-serial' | 'film' | 'serial';
+export type IMediaTypes = 'anime' | 'anime-serial' | 'film' | 'serial' | 'other';
 
 export interface IUser {
   _id: string;

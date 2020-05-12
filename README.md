@@ -1,10 +1,10 @@
-# maria
+# Maria
 
-> See, what you read and watch and how much
+> Animes and films list
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ npm install
 

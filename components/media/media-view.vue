@@ -1,70 +1,31 @@
 <template>
-  <b-row class="preview">
-    <b-col cols="3">
-      <div @click="showPreview">
-        <b-img-lazy v-if="media.poster" :src="media.poster" blank class="preview__poster" />
-        <b-img v-else src="~/static/img/poster-empty.svg" class="preview__poster" />
-      </div>
-    </b-col>
-    <b-col cols="9">
-      <b-row align-v="center" align-h="between" class="mb-2">
-        <b-col cols="10">
-          <h1 class="font-weight-light">
-            <b-link
-              v-if="media.link && media.link !== ''"
-              v-text="media.title"
-              :href="media.link"
-              class="preview__link"
-            />
-            <template v-else>
-              {{ media.title }}
-            </template>
-          </h1>
-        </b-col>
-        <b-col v-if="controls" class="d-flex justify-content-end">
-          <crud-buttons :id="media._id" :friend="friend" :media-type="mediaType" @delete="handleDelete" />
-        </b-col>
-      </b-row>
-
-      <div class="grid mb-4">
-        <div class="grid__tile _4">
-          <span class="preview__label">Director:</span>
-          <span class="preview__value">{{ media.director || '?' }}</span>
-        </div>
-        <div class="grid__tile _4">
-          <span class="preview__label">Release:</span>
-          <span class="preview__value">{{ media.releaseDate || '?' }}</span>
-        </div>
-        <div class="grid__tile _4">
-          <span class="preview__label">Duration:</span>
-          <span class="preview__value">{{ formatDuration(media.duration) }}</span>
-        </div>
-        <div v-if="media.season" class="grid__tile _3">
-          <span class="preview__label">Seasons:</span>
-          <span class="preview__value">{{ media.seasonsAmount }}</span>
-        </div>
-        <div v-if="media.season" class="grid__tile _3">
-          <span class="preview__label">Season:</span>
-          <span class="preview__value">{{ media.season }}</span>
-        </div>
-        <div v-if="media.season" class="grid__tile _3">
-          <span class="preview__label">Series:</span>
-          <span class="preview__value">{{ media.seriesInSeason }}</span>
-        </div>
-        <div v-if="media.season" class="grid__tile _3">
-          <span class="preview__label">To watch</span>
-          <span class="preview__value">{{ media.toWatch }}</span>
-        </div>
-        <div class="grid__tile _12">
-          <span class="preview__label">Genre:</span>
-          <span class="preview__value">{{ genres }}</span>
-        </div>
-      </div>
-
-      <p v-text="media.description" class="preview__description" />
-    </b-col>
-    <vue-easy-lightbox :imgs="poster" :visible="lightbox" @hide="lightbox = false" />
-  </b-row>
+  <li :class="['list__item', { _watched: media.watched }]">
+    <div class="list__item-block _title">
+      <b-link
+        v-if="media.link !== ''"
+        :href="media.link"
+        v-text="media.title"
+        class="list__item-link"
+        :title="media.title"
+      />
+      <span v-else class="list__item-link" v-text="media.title" :title="media.title" />
+    </div>
+    <div class="list__item-block _duration">
+      <span class="list__item-span">Duration</span>
+      {{ formatDuration(media.duration, media.totalSeries) }}
+    </div>
+    <div class="list__item-block _year">
+      <span class="list__item-span">Year</span>
+      {{ media.year }}
+    </div>
+    <div class="list__item-block _genres">
+      <span class="list__item-span">Genres</span>
+      {{ genres }}
+    </div>
+    <div v-if="loggedIn" class="list__item-block _controls">
+      <crud-buttons :id="media._id" :media-type="mediaType" @delete="handleDelete" />
+    </div>
+  </li>
 </template>
 
 <script lang="ts">
@@ -82,9 +43,6 @@ export default class Index extends Vue {
   @Prop({ default: false, required: false, type: Boolean })
   controls!: boolean;
 
-  @Prop({ default: () => {}, required: false, type: Object })
-  friend!: IUser;
-
   @Prop({ default: {}, required: true, type: Object })
   media!: IMediaAny;
 
@@ -92,7 +50,10 @@ export default class Index extends Vue {
   mediaType!: IMediaTypes;
 
   formatDuration = formatDuration;
-  lightbox: boolean = false;
+
+  get loggedIn(): boolean {
+    return this.$auth.loggedIn;
+  }
 
   @Emit('delete')
   handleDelete(mediaType: string, media: IMediaAny) {
@@ -100,17 +61,7 @@ export default class Index extends Vue {
   }
 
   get genres(): string {
-    return this.media.genre.sort().join(', ');
-  }
-
-  get poster(): string {
-    return this.media.poster === '' ? require('~/static/img/poster-empty.svg') : this.media.poster;
-  }
-
-  showPreview() {
-    this.lightbox = true;
-
-    console.log('clicked');
+    return this.media.genres.sort().join(', ');
   }
 }
 </script>

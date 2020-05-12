@@ -7,7 +7,40 @@
       </b-button>
     </b-button-group>
     <b-collapse :id="mediaType" class="pt-3">
-      <div v-if="list.length">
+      <div v-if="list.length" class="list-header">
+        <div class="list-header__block _title">
+          <button
+            :class="['list-header__title', '_sorter', getSorterClass('title')]"
+            class=""
+            @click="handleSort('title')"
+          >
+            Title
+          </button>
+        </div>
+        <div class="list-header__block _duration">
+          <button
+            :class="['list-header__title', '_sorter', getSorterClass('duration')]"
+            class=""
+            @click="handleSort('duration')"
+          >
+            Duration
+          </button>
+        </div>
+        <div class="list-header__block _year">
+          <button
+            :class="['list-header__title', '_sorter', getSorterClass('year')]"
+            class=""
+            @click="handleSort('year')"
+          >
+            Year
+          </button>
+        </div>
+        <div class="list-header__block _genres">
+          <span class="list-header__title">Genres</span>
+        </div>
+      </div>
+
+      <ul v-if="list.length" class="list">
         <media-view
           v-for="media of list"
           :key="media._id"
@@ -15,10 +48,9 @@
           :media="media"
           :media-type="mediaType"
           :friend="friend"
-          class="mb-2"
           @delete="handleDelete"
         />
-      </div>
+      </ul>
       <b-alert v-else class="mt-2 text-center" show>
         {{ 'Your list is empty, my lord' }}
       </b-alert>
@@ -30,7 +62,7 @@
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 import MediaView from '~/components/media/media-view.vue';
 import { BIcon, BIconPlus } from 'bootstrap-vue';
-import { IMedia, IMediaSerial, IMediaTypes, IMediaDelete, IUser } from '~/helpers/interfaces';
+import { IMediaDelete, IUser, IMediaAny } from '~/helpers/interfaces';
 
 @Component({
   components: {
@@ -47,7 +79,7 @@ export default class MediaList extends Vue {
   friend!: IUser;
 
   @Prop({ default: () => [], required: true, type: Array })
-  list!: IMedia[] | IMediaSerial[];
+  list!: IMediaAny[];
 
   @Prop({ default: '', required: true, type: String })
   title!: string;
@@ -55,12 +87,61 @@ export default class MediaList extends Vue {
   @Prop({ default: '', required: true, type: String })
   mediaType!: string;
 
+  sort: any = {
+    title: '',
+    duration: '',
+    year: '',
+  };
+
   get createLink() {
     if (this.friend) {
       return { name: `friend-media-add`, params: { friend: this.friend.username, media: this.mediaType } };
     } else {
       return { name: 'media-add', params: { media: this.mediaType } };
     }
+  }
+
+  // get liType() {
+  //   return this.mediaType === 'anime' || this.mediaType === 'film' ? 'media-film' : 'media-serial';
+  // }
+
+  getSorterClass(key: string) {
+    return this.sort[key] === 'ASC' ? '_top' : this.sort[key] === 'DESC' ? '_bottom' : 'f';
+  }
+
+  handleSort(key: string) {
+    for (const [k] of Object.entries(this.sort)) {
+      if (k !== key) this.sort[k] = '';
+    }
+
+    if (this.sort[key] === 'ASC') {
+      this.sort[key] = '';
+      this.list.sort(this.sortByKey('createdAt'));
+    } else if (this.sort[key] === 'DESC') {
+      this.sort[key] = 'ASC';
+      this.list.sort(this.sortByKey(key));
+    } else {
+      this.sort[key] = 'DESC';
+      this.list.sort(this.sortByKey(key));
+    }
+
+    this.list.sort(this.sortByWatched());
+  }
+
+  sortByKey(key: string) {
+    if (key === 'createdAt') {
+      return (a: IMediaAny, b: IMediaAny) => (new Date(a[key]).getTime() > new Date(b[key]).getTime() ? 1 : -1);
+    }
+
+    if (this.sort[key] === 'DESC') {
+      return (a: IMediaAny, b: IMediaAny) => (a[key] < b[key] ? 1 : -1);
+    } else {
+      return (a: IMediaAny, b: IMediaAny) => (a[key] > b[key] ? 1 : -1);
+    }
+  }
+
+  sortByWatched() {
+    return this.sortByKey('watched');
   }
 
   @Emit('delete')

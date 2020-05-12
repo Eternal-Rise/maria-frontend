@@ -36,31 +36,17 @@ export default class CrudButtons extends Vue {
   @Prop({ required: true, type: String })
   id!: string;
 
-  @Prop({ default: () => {}, required: false, type: Object })
-  friend!: IUser;
-
   @Prop({ required: true, type: String })
   mediaType!: IMediaAny;
 
   popover: boolean = false;
 
   get deleteUrl() {
-    if (this.friend) {
-      return `/media/${this.friend._id}/${this.mediaType}s/${this.id}`;
-    } else {
-      return `/media/${this.mediaType}s/${this.id}`;
-    }
+    return `/media/${this.mediaType}s/${this.id}`;
   }
 
   get editLink() {
-    if (this.friend) {
-      return {
-        name: `friend-media-id-edit`,
-        params: { id: this.id, friend: this.friend.username, media: this.mediaType },
-      };
-    } else {
-      return { name: `media-id-edit`, params: { id: this.id, media: this.mediaType } };
-    }
+    return { name: `media-id-edit`, params: { id: this.id, media: this.mediaType } };
   }
 
   handleDelete() {

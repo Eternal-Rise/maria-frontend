@@ -3,19 +3,19 @@
     <b-col md="10" lg="8" xl="6">
       <m-spinner :loading="loading">
         <b-form @submit.prevent="handleSubmit">
-          <b-form-group label="Title">
+          <b-form-group label="Title *">
             <b-form-input v-model.trim="form.title" required />
           </b-form-group>
 
-          <b-form-group label="Duration (in minutes)">
+          <b-form-group label="Duration (in minutes) *">
             <b-form-input v-model.number="form.duration" type="number" />
           </b-form-group>
 
-          <b-form-group label="Genre">
+          <b-form-group label="Genre *">
             <!-- prop `add-on-change` is needed to enable adding tags vie the `change` event -->
             <b-form-tags
-              v-model="form.genre"
-              :disabled="form.genre && form.genre.length >= 4"
+              v-model="form.genres"
+              :disabled="form.genres && form.genres.length >= 4"
               add-on-change
               class="bg-transparent border-0 p-0"
               no-outer-focus
@@ -31,7 +31,7 @@
                 <b-form-select
                   v-bind="inputAttrs"
                   v-on="inputHandlers"
-                  :disabled="(form.genre && form.genre.length >= 4) || availableGenres().length === 0"
+                  :disabled="(form.genres && form.genres.length >= 4) || availableGenres().length === 0"
                   :options="availableGenres()"
                 >
                   <template v-slot:first>
@@ -49,26 +49,25 @@
 
           <b-row v-if="isSerial">
             <b-col>
-              <b-form-group label="Season">
-                <b-form-input v-model.number="form.season" type="number" />
-              </b-form-group>
-            </b-col>
-            <b-col>
               <b-form-group label="Seasons">
-                <b-form-input v-model.number="form.seasonsAmount" type="number" />
+                <b-form-input v-model.number="seasons" min="1" type="number" />
               </b-form-group>
             </b-col>
             <b-col>
-              <b-form-group label="Series">
-                <b-form-input v-model.number="form.seriesInSeason" type="number" />
+              <b-form-group v-for="i in seasons" :key="i" :label="`Seasons ${i}`">
+                <b-form-input v-model.number="form.seasons[i - 1]" min="1" type="number" required />
               </b-form-group>
             </b-col>
             <b-col>
-              <b-form-group label="To watch">
-                <b-form-input v-model.number="form.toWatch" type="number" />
+              <b-form-group label="To watch (s1e1)">
+                <b-form-input v-model.trim="form.toWatch" pattern="s\d+e\d+" />
               </b-form-group>
             </b-col>
           </b-row>
+
+          <b-form-group label="Year">
+            <b-form-input v-model.trim.number="form.year" min="1950" :max="maxYear" type="number" />
+          </b-form-group>
 
           <b-form-group>
             <b-form-checkbox v-model="form.watched" required>
@@ -76,48 +75,11 @@
             </b-form-checkbox>
           </b-form-group>
 
-          <b-button v-b-toggle.form-details class="mb-3 w-25">Details</b-button>
-
-          <b-collapse id="form-details">
-            <b-form-group label="Director">
-              <b-form-input v-model="form.director" placeholder="e.g. Hayao Miyazaki" />
-            </b-form-group>
-
-            <b-form-group label="Description">
-              <b-form-textarea v-model.trim="form.description" rows="6" />
-            </b-form-group>
-
-            <b-form-group label="Release date">
-              <b-input-group>
-                <b-form-input
-                  v-model.trim="form.releaseDate"
-                  pattern="\d{4}(-\d{2})?(-\d{2})?"
-                  placeholder="YYYY-MM-DD"
-                />
-                <b-input-group-append>
-                  <b-form-datepicker
-                    v-model="form.releaseDate"
-                    :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
-                    button-only
-                    hide-header
-                    right
-                  />
-                </b-input-group-append>
-              </b-input-group>
-            </b-form-group>
-
-            <b-form-group label="Link lang">
-              <b-form-select v-model="form.linkLang" :options="languagies" />
-            </b-form-group>
-
-            <b-form-group description="Link to image" class="mb-4" label="Poster">
-              <b-form-input v-model.trim="form.poster" />
-            </b-form-group>
-
-            <b-img-lazy v-if="/(\.jpe?g|\.png|\.webp)/.test(form.poster)" :src="form.poster" class="mb-3" />
-          </b-collapse>
-
-          <b-button type="submit" variant="primary" class="mb-3">Save</b-button>
+          <b-row align-h="center">
+            <b-col cols="12" md="8" lg="5">
+              <b-button type="submit" variant="primary" class="w-100">Save</b-button>
+            </b-col>
+          </b-row>
         </b-form>
       </m-spinner>
     </b-col>
@@ -137,21 +99,13 @@ import { GENRES } from '~/helpers/constants';
   },
 })
 export default class AnimeForm extends Vue {
-  media!: any;
-  languagies: string[] = ['Ukrainian', 'English', 'Russian'];
+  media!: IMediaAny;
   loading: boolean = false;
   genres: string[] = GENRES;
+  seasons = 1;
 
   get form(): IMediaAny {
     return this.media;
-  }
-
-  get friend() {
-    const friends = this.$auth.user && this.$auth.user.friends.list;
-
-    if (friends && friends.length) {
-      return friends.find((friend: any) => friend.username === this.$route.params.friend);
-    }
   }
 
   set form(form: IMediaAny) {
@@ -163,11 +117,7 @@ export default class AnimeForm extends Vue {
   }
 
   get url(): string {
-    if (this.friend && this.friend._id) {
-      return `/media/${this.friend._id}/${this.mediaType}s`;
-    } else {
-      return `/media/${this.mediaType}s`;
-    }
+    return `/media/${this.mediaType}s`;
   }
 
   get idUrl(): string {
@@ -178,24 +128,33 @@ export default class AnimeForm extends Vue {
     return (MEDIA_SERIAL_TYPES as string[]).includes(this.mediaType);
   }
 
+  get maxYear(): number {
+    const currentYear = new Date().getFullYear();
+    return currentYear + 5;
+  }
+
   get mediaType(): string {
     return this.$route.params.media || '';
   }
 
   preparedForm(): IMediaAny {
-    const { genre, ...preparedForm } = this.form;
+    const { genres, ...preparedForm } = this.form;
 
-    (preparedForm as IMediaAny).genre = genre.sort();
+    (preparedForm as IMediaAny).genres = genres.sort();
 
     return preparedForm as IMediaAny;
   }
 
   availableGenres() {
-    return this.genres.filter(opt => this.form.genre.indexOf(opt) === -1);
+    return this.genres.filter(opt => this.form.genres.indexOf(opt) === -1);
   }
 
   handleCreate() {
     this.loading = true;
+
+    if (this.media.seasons) {
+      this.media.totalSeries = this.media.seasons.reduce((a: number, b: number) => a + b, 0);
+    }
 
     this.$axios({
       method: 'post',
@@ -252,15 +211,11 @@ export default class AnimeForm extends Vue {
 
   newForm(): IMediaAny {
     const media: IMedia = {
-      description: '',
-      director: '',
       duration: 60,
-      genre: [],
+      genres: [],
       link: '',
-      linkLang: '',
-      poster: '',
-      releaseDate: null,
       title: '',
+      year: '',
       watched: false,
     };
 
@@ -268,10 +223,9 @@ export default class AnimeForm extends Vue {
 
     const mediaSerial: IMediaSerial = {
       ...media,
-      season: 1,
-      seasonsAmount: 1,
-      seriesInSeason: 1,
-      toWatch: 1,
+      seasons: [],
+      totalSeries: 1,
+      toWatch: 's1e1',
     };
 
     return mediaSerial;
@@ -291,7 +245,11 @@ export default class AnimeForm extends Vue {
       })
         .then(({ data }: any) => {
           if (data) {
-            const { _id, __v, createdAt, owner, updatedAt, ...media } = data;
+            const { _id, __v, createdAt, updatedAt, ...media } = data;
+
+            if (media.seasons) {
+              this.seasons = media.seasons.length;
+            }
 
             for (const [key, value] of Object.entries(media)) {
               this.$set(this.form, key, media[key]);
