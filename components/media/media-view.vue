@@ -13,6 +13,18 @@
     <div class="list__item-block _duration">
       <span class="list__item-span">Duration</span>
       {{ formatDuration(media.duration, media.totalSeries) }}
+
+      <div v-if="Array.isArray(media.seasons)" class="seasons">
+        <div
+          v-for="(series, i) of media.seasons"
+          :key="i"
+          :class="['seasons__item', { _current: i + 1 === currentSeason }]"
+        >
+          {{ `Season ${i + 1} - ${series}` }}
+          <template v-if="i + 1 < currentSeason">{{ ` / ${series}` }}</template>
+          <template v-if="i + 1 === currentSeason">{{ ` / ${currentSearies}` }}</template>
+        </div>
+      </div>
     </div>
     <div class="list__item-block _year">
       <span class="list__item-span">Year</span>
@@ -50,6 +62,14 @@ export default class Index extends Vue {
   mediaType!: IMediaTypes;
 
   formatDuration = formatDuration;
+
+  get currentSeason(): number {
+    return parseInt(this.media.toWatch ? this.media.toWatch.replace(/s(\d+)/, '$1') : 1);
+  }
+
+  get currentSearies(): number {
+    return parseInt(this.media.toWatch ? this.media.toWatch.replace(/s\d+e(\d+)/, '$1') : 1);
+  }
 
   get loggedIn(): boolean {
     return this.$auth.loggedIn;

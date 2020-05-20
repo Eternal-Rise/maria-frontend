@@ -4,17 +4,51 @@
       <b-col class="text-md-right text-center">
         Total viewed
         <span style="font-size: 1.25em">
-          {{ formatDuration(totalWatched) }}
+          <animate-number
+            v-if="statistic.totalViewed.days"
+            :number="statistic.totalViewed.days"
+            :speed="100"
+            postfix="d"
+          />
+          <animate-number
+            v-if="statistic.totalViewed.hours"
+            :number="statistic.totalViewed.hours"
+            :speed="50"
+            postfix="h"
+          />
+          <animate-number
+            v-if="statistic.totalViewed.minutes"
+            :number="statistic.totalViewed.minutes"
+            :speed="10"
+            postfix="m"
+          />
         </span>
       </b-col>
       <b-col cols="12" md="5" xl="5">
-        <b-progress :max="totalHours" height="2em">
-          <b-progress-bar :value="totalWatched" variant="primary" />
-        </b-progress>
+        <div class="progress">
+          <div class="progress__bar" :style="{ transform: `scale(${viewedPercent}, 1)` }" />
+        </div>
       </b-col>
       <b-col class="text-md-left text-center">
         <span style="font-size: 1.25em">
-          {{ formatDuration(totalToWatch) }}
+          <animate-number
+            v-if="statistic.totalToView.days"
+            :number="statistic.totalToView.days"
+            :speed="100"
+            postfix="d"
+          />
+          <animate-number
+            v-if="statistic.totalToView.hours"
+            :number="statistic.totalToView.hours"
+            :speed="50"
+            postfix="h"
+          />
+          <animate-number
+            v-if="statistic.totalToView.minutes"
+            :number="statistic.totalToView.minutes"
+            :speed="10"
+            postfix="m"
+          />
         </span>
         Total to view
       </b-col>
@@ -35,15 +69,25 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import MSpinner from '~/components/helpers/m-spinner.vue';
-import MediaList from '~/components/media/media-list.vue';
-import { IMediaDelete, IMediaAny, iMediaBulk, IMediaSerial, IMedia } from '~/helpers/interfaces';
+import {
+  IMediaDelete,
+  IMediaAny,
+  iMediaBulk,
+  IMediaSerial,
+  IMedia,
+  IStatisticComplex,
+  IStatistic,
+} from '~/helpers/interfaces';
 import { MEDIA_SERIAL_TYPES } from '~/helpers/constants';
 import { formatDuration } from '~/helpers/formaters';
+import AnimateNumber from '~/components/animate-number.vue';
+import MSpinner from '~/components/helpers/m-spinner.vue';
+import MediaList from '~/components/media/media-list.vue';
 
 @Component({
   auth: false,
   components: {
+    AnimateNumber,
     MSpinner,
     MediaList,
   },
@@ -52,19 +96,27 @@ export default class Index extends Vue {
   formatDuration = formatDuration;
   loading: boolean = true;
   media: iMediaBulk[] = [
+    { list: [], title: 'Animes', mediaType: 'anime' },
     { list: [], title: 'Anime Serials', mediaType: 'anime-serial' },
-    { list: [], title: 'Anime', mediaType: 'anime' },
     { list: [], title: 'Films', mediaType: 'film' },
     { list: [], title: 'Serials', mediaType: 'serial' },
     { list: [], title: 'Others', mediaType: 'other' },
   ];
 
-  totalToWatch = 0;
-  totalWatched = 0;
-  totalHours = 0;
+  statistic: IStatisticComplex = {
+    total: { days: 0, hours: 0, minutes: 0 },
+    totalToView: { days: 0, hours: 0, minutes: 0 },
+    totalViewed: { days: 0, hours: 0, minutes: 0 },
+  };
+
+  viewedPercent = 0;
 
   get loggedIn(): boolean {
     return this.$auth.loggedIn;
+  }
+
+  getMinutes(total: IStatistic): number {
+    return total.days * 24 * 60 + total.hours * 60 + total.minutes;
   }
 
   handleDelete({ media, mediaType }: IMediaDelete): void {
@@ -81,78 +133,40 @@ export default class Index extends Vue {
     }
   }
 
-  serialHours(serials: IMediaSerial[], i = 0) {
-    const { duration, watched } = serials[i] || {};
-
-    if (duration) {
-      this.totalHours += serials[i].totalSeries * duration;
-
-      const season = +serials[i].toWatch.replace(/s(\d+)e\d+/, '$1');
-      const series = +serials[i].toWatch.replace(/s\d+e(\d+)/, '$1');
-
-      if (season > 1) {
-        this.totalWatched +=
-          serials[i].seasons.slice(0, season - 1).reduce((a: number, b: number) => a + b, 0) * duration;
-      }
-
-      this.totalWatched += duration * (watched ? series : series - 1);
-      this.totalToWatch = this.totalHours - this.totalWatched;
-      i += 1;
-      if (i === serials.length) return;
-
-      setTimeout(() => {
-        this.serialHours(serials, i);
-      }, 25);
-    }
-  }
-
-  filmHours(films: IMedia[], i = 0) {
-    const { duration, watched } = films[i] || {};
-
-    if (duration) {
-      this.totalHours += duration;
-      if (watched) this.totalWatched += duration;
-
-      this.totalToWatch = this.totalHours - this.totalWatched;
-      i += 1;
-      if (i === films.length) return;
-
-      setTimeout(() => {
-        this.filmHours(films, i);
-      }, 25);
-    }
-  }
-
   mounted() {
-    const animeSerials = this.$axios.$get('/media/anime-serials');
-    const animes = this.$axios.$get('/media/animes');
-    const films = this.$axios.$get('/media/films');
-    const serials = this.$axios.$get('/media/serials');
-    const others = this.$axios.$get('/media/others');
-
-    Promise.all([animeSerials, animes, films, serials, others])
-      .then(([animeSerials, animes, films, serials, others]) => {
-        this.media[0].list = animeSerials;
-        this.media[1].list = animes;
-        this.media[2].list = films;
-        this.media[3].list = serials;
-        this.media[4].list = others;
-
-        for (const media of this.media) {
-          if (MEDIA_SERIAL_TYPES.some(type => type === media.mediaType)) {
-            this.serialHours(media.list as IMediaSerial[]);
-          } else {
-            this.filmHours(media.list);
-          }
-        }
+    this.$axios({
+      method: 'get',
+      url: '/media',
+    })
+      .then(({ data }: any) => {
+        this.media = data;
       })
       .finally(() => {
         setTimeout(() => {
           this.loading = false;
         }, 200);
       });
+
+    this.$axios({
+      method: 'get',
+      url: '/media/statistic',
+    }).then(({ data }: any) => {
+      this.statistic = data;
+
+      this.viewedPercent = this.getMinutes(data.totalViewed) / this.getMinutes(data.total);
+    });
   }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.progress {
+  display: flex;
+  &__bar {
+    width: 100%;
+    background-color: $blue;
+    transform-origin: left;
+    transition: 1.8s cubic-bezier(0.53, 0.89, 0.73, 0.89);
+  }
+}
+</style>

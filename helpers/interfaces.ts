@@ -42,3 +42,15 @@ export interface IProfile {
   email: string;
   username: string;
 }
+
+export interface IStatistic {
+  days: number;
+  hours: number;
+  minutes: number;
+}
+
+export interface IStatisticComplex {
+  total: IStatistic;
+  totalToView: IStatistic;
+  totalViewed: IStatistic;
+}
