@@ -9,18 +9,19 @@
     padding: 0.5rem;
     position: relative;
 
+    // ORDER IS IMPORTANT HERE. First - even, odd. Then @media
+    // .list__item
+    &:nth-child(even) {
+      background-color: rgba(#d9ebeb, 0.1);
+    }
+
+    // .list__item
+    &:nth-child(odd) {
+      background-color: rgba(#d9ebeb, 0.175);
+    }
+
     @media screen and (min-width: $md) {
       width: 50%;
-
-      // .list__item
-      &:nth-child(even) {
-        background-color: inherit;
-      }
-
-      // .list__item
-      &:nth-child(odd) {
-        background-color: inherit;
-      }
 
       // .list__item
       &:nth-child(4n + 1),
@@ -41,12 +42,12 @@
 
       // .list__item
       &:nth-child(even) {
-        background-color: rgba($white, 0.1);
+        background-color: rgba(#d9ebeb, 0.1);
       }
 
       // .list__item
       &:nth-child(odd) {
-        background-color: rgba($white, 0.175);
+        background-color: rgba(#d9ebeb, 0.175);
       }
     }
 
@@ -55,16 +56,6 @@
       .seasons {
         display: block;
       }
-    }
-
-    // .list__item
-    &:nth-child(even) {
-      background-color: rgba($white, 0.1);
-    }
-
-    // .list__item
-    &:nth-child(odd) {
-      background-color: rgba($white, 0.175);
     }
 
     // .list__item
