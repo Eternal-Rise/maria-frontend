@@ -36,9 +36,7 @@ const config: Configuration = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [
-    { src: '~/plugins/vue-easy-lightbox', ssr: false },
-  ],
+  plugins: [],
   /*
   ** Nuxt.js dev-modules
   */

@@ -27,8 +27,8 @@ export default class AnimateNumber extends Vue {
 
   created() {
     const interval = setInterval(() => {
-      this.currentNumber += 1;
       if (this.currentNumber === this.number) clearInterval(interval);
+      else this.currentNumber += 1;
     }, this.speed);
   }
 }
