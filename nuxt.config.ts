@@ -4,11 +4,12 @@ import { Configuration } from '@nuxt/types';
 const isDev = process.env.NODE_ENV === 'development';
 
 const config: Configuration = {
-  generate: {
+  export: {
     fallback: true,
   },
 
   mode: 'universal',
+  target: 'static',
   /*
   ** Headers of the page
   */
@@ -75,11 +76,7 @@ const config: Configuration = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    credentials: false,
-    host: isDev ? 'localhost' : 'saliuk.herokuapp.com',
-    https: true,
-    port: isDev ? '3000' : '443',
-    prefix: '/maria',
+    baseURL: isDev ? 'http://localhost:3000' : 'https://saliuk-maria.herokuapp.com',
   },
 
   auth: {
