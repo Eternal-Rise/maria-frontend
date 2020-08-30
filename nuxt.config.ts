@@ -111,7 +111,7 @@ const config: Configuration = {
   },
 
   styleResources: {
-    scss: ['./assets/styles/_variables.scss'],
+    scss: ['./node_modules/@inkline/inkline/src/css/config/index.scss', './assets/styles/_variables.scss'],
   },
   /*
   ** Build configuration

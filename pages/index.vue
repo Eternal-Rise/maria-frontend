@@ -1,69 +1,65 @@
 <template>
   <m-spinner :loading="loading">
-    <b-row align-v="center" class="mb-3">
-      <b-col class="text-md-right text-center">
+    <!-- <i-row center class="_margin-bottom-1">
+      <i-column class="text-md-right text-center">
         Total viewed
-        <span style="font-size: 1.25em">
+        <span style="font-size: 1.25em;">
           <animate-number
-            v-if="statistic.totalViewed.days"
-            :number="statistic.totalViewed.days"
+            :number="statistic && statistic.totalViewed && statistic.totalViewed.days"
             :speed="100"
             postfix="d"
           />
           <animate-number
-            v-if="statistic.totalViewed.hours"
-            :number="statistic.totalViewed.hours"
+            :number="statistic && statistic.totalViewed && statistic.totalViewed.hours"
             :speed="50"
             postfix="h"
           />
           <animate-number
-            v-if="statistic.totalViewed.minutes"
-            :number="statistic.totalViewed.minutes"
+            :number="statistic && statistic.totalViewed && statistic.totalViewed.minutes"
             :speed="10"
             postfix="m"
           />
         </span>
-      </b-col>
-      <b-col cols="12" md="5" xl="5">
+      </i-column>
+      <i-column :md="5">
         <div class="progress">
           <div class="progress__bar" :style="{ transform: `scale(${viewedPercent}, 1)` }" />
         </div>
-      </b-col>
-      <b-col class="text-md-left text-center">
-        <span style="font-size: 1.25em">
+      </i-column>
+      <i-column class="text-md-left text-center">
+        <span style="font-size: 1.25em;">
           <animate-number
-            v-if="statistic.totalToView.days"
-            :number="statistic.totalToView.days"
+            :number="statistic && statistic.totalToView && statistic.totalToView.days"
             :speed="100"
             postfix="d"
           />
           <animate-number
-            v-if="statistic.totalToView.hours"
-            :number="statistic.totalToView.hours"
+            :number="statistic && statistic.totalToView && statistic.totalToView.hours"
             :speed="50"
             postfix="h"
           />
           <animate-number
-            v-if="statistic.totalToView.minutes"
-            :number="statistic.totalToView.minutes"
+            :number="statistic && statistic.totalToView && statistic.totalToView.minutes"
             :speed="10"
             postfix="m"
           />
         </span>
         Total to view
-      </b-col>
-    </b-row>
+      </i-column>
+    </i-row> -->
 
-    <media-list
-      v-for="item of media"
-      :key="item.mediaType"
-      :controls="loggedIn"
-      :list="item.list"
-      :media-type="item.mediaType"
-      :title="item.title"
-      class="mb-3"
-      @delete="handleDelete"
-    />
+    <i-collapsible>
+      <media-list
+        v-for="item of media"
+        :key="item.mediaType"
+        :controls="$auth.loggedIn"
+        :list="item.list"
+        :media-type="item.mediaType"
+        :title="item.title"
+        class="mb-3"
+        @delete="handleDelete"
+      />
+    </i-collapsible>
   </m-spinner>
 </template>
 
@@ -111,10 +107,6 @@ export default class Index extends Vue {
 
   viewedPercent = 0;
 
-  get loggedIn(): boolean {
-    return this.$auth.loggedIn;
-  }
-
   getMinutes(total: IStatistic): number {
     return total.days * 24 * 60 + total.hours * 60 + total.minutes;
   }
@@ -153,7 +145,7 @@ export default class Index extends Vue {
     }).then(({ data }: any) => {
       this.statistic = data;
 
-      this.viewedPercent = this.getMinutes(data.totalViewed) / this.getMinutes(data.total);
+      this.viewedPercent = 0 //this.getMinutes(data.totalViewed) / this.getMinutes(data.total);
     });
   }
 }
@@ -161,10 +153,12 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 .progress {
+  background-color: $color-secondary;
   display: flex;
   &__bar {
+    height: $spacer;
     width: 100%;
-    // background-color: $blue;
+    background-color: $color-primary;
     transform-origin: left;
     transition: 1.8s cubic-bezier(0.53, 0.89, 0.73, 0.89);
   }

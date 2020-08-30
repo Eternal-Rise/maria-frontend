@@ -1,61 +1,49 @@
 <template>
-  <div>
-    <b-button-group class="w-100">
-      <b-button v-b-toggle="mediaType" class="w-100" variant="outline-primary">{{ title }}</b-button>
-      <b-button v-if="controls" :to="createLink" style="font-size: 1rem" variant="primary">
-        <b-icon icon="plus" />
-      </b-button>
-    </b-button-group>
-    <b-collapse :id="mediaType" class="pt-3">
-      <div v-if="list.length" class="list-header">
-        <div class="list-header__block _title">
-          <button
-            :class="['list-header__title', '_sorter', getSorterClass('title')]"
-            class=""
-            @click="handleSort('title')"
-          >
-            Title
-          </button>
-        </div>
-        <div class="list-header__block _duration">
-          <button
-            :class="['list-header__title', '_sorter', getSorterClass('duration')]"
-            class=""
-            @click="handleSort('duration')"
-          >
-            Duration
-          </button>
-        </div>
-        <div class="list-header__block _year">
-          <button
-            :class="['list-header__title', '_sorter', getSorterClass('year')]"
-            class=""
-            @click="handleSort('year')"
-          >
-            Year
-          </button>
-        </div>
-        <div class="list-header__block _genres">
-          <span class="list-header__title">Genres</span>
-        </div>
+  <i-collapsible-item :title="title">
+    <div v-if="list.length" class="list-header">
+      <div class="list-header__block _title">
+        <button
+          :class="['list-header__title', '_sorter', getSorterClass('title')]"
+          class=""
+          @click="handleSort('title')"
+        >
+          Title
+        </button>
       </div>
+      <div class="list-header__block _duration">
+        <button
+          :class="['list-header__title', '_sorter', getSorterClass('duration')]"
+          class=""
+          @click="handleSort('duration')"
+        >
+          Duration
+        </button>
+      </div>
+      <div class="list-header__block _year">
+        <button :class="['list-header__title', '_sorter', getSorterClass('year')]" class="" @click="handleSort('year')">
+          Year
+        </button>
+      </div>
+      <div class="list-header__block _genres">
+        <span class="list-header__title">Genres</span>
+      </div>
+    </div>
 
-      <ul v-if="list.length" class="list">
-        <media-view
-          v-for="media of list"
-          :key="media._id"
-          :controls="controls"
-          :media="media"
-          :media-type="mediaType"
-          :friend="friend"
-          @delete="handleDelete"
-        />
-      </ul>
-      <b-alert v-else class="mt-2 text-center" show>
-        {{ 'Your list is empty, my lord' }}
-      </b-alert>
-    </b-collapse>
-  </div>
+    <ul v-if="list.length" class="list">
+      <media-view
+        v-for="media of list"
+        :key="media._id"
+        :controls="controls"
+        :media="media"
+        :media-type="mediaType"
+        :friend="friend"
+        @delete="handleDelete"
+      />
+    </ul>
+    <i-alert v-else class="mt-2 text-center" show>
+      {{ 'Your list is empty, my lord' }}
+    </i-alert>
+  </i-collapsible-item>
 </template>
 
 <script lang="ts">
@@ -148,4 +136,16 @@ export default class MediaList extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.item.item {
+  position: static;
+
+  ::v-deep {
+    .header {
+      .icon {
+        position: static;
+      }
+    }
+  }
+}
+</style>

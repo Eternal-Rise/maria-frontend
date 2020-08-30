@@ -1,11 +1,11 @@
 <template>
-  <b-container>
-    <b-row class="align-items-end justify-content-center py-5 header">
+  <i-container>
+    <i-row  bottom center class="_padding-y-5 header">
       <nuxt-logo />
       <h1 class="lead-title m-0 mx-5">Maria</h1>
-    </b-row>
+    </i-row>
     <nuxt />
-  </b-container>
+  </i-container>
 </template>
 
 <script lang="ts">
