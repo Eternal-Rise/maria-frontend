@@ -1,7 +1,7 @@
 <template>
   <m-spinner :loading="loading">
-    <!-- <i-row center class="_margin-bottom-1">
-      <i-column class="text-md-right text-center">
+    <i-row center middle class="_margin-bottom-2">
+      <i-column class="_text-right">
         Total viewed
         <span style="font-size: 1.25em;">
           <animate-number
@@ -26,7 +26,7 @@
           <div class="progress__bar" :style="{ transform: `scale(${viewedPercent}, 1)` }" />
         </div>
       </i-column>
-      <i-column class="text-md-left text-center">
+      <i-column class="_text-left">
         <span style="font-size: 1.25em;">
           <animate-number
             :number="statistic && statistic.totalToView && statistic.totalToView.days"
@@ -46,7 +46,7 @@
         </span>
         Total to view
       </i-column>
-    </i-row> -->
+    </i-row>
 
     <i-collapsible>
       <media-list
@@ -145,7 +145,7 @@ export default class Index extends Vue {
     }).then(({ data }: any) => {
       this.statistic = data;
 
-      this.viewedPercent = 0 //this.getMinutes(data.totalViewed) / this.getMinutes(data.total);
+      this.viewedPercent = this.getMinutes(data.totalViewed) / this.getMinutes(data.total);
     });
   }
 }
@@ -153,8 +153,10 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 .progress {
-  background-color: $color-secondary;
+  background-color: $color-light;
+  border: 1px solid $color-dark;
   display: flex;
+
   &__bar {
     height: $spacer;
     width: 100%;
