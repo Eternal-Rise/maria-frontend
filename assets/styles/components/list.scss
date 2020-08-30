@@ -122,25 +122,33 @@
           padding-left: 0.5rem;
         }
       }
+    }
 
+    // .list__item
+    &.dark {
       .seasons {
-        background-color: $color-light;
-        box-shadow: 0 0 0.25rem $color-dark;
-        display: none;
-        position: absolute;
-        text-align: left;
-        white-space: nowrap;
-        z-index: 100;
-        left: 0;
-        bottom: -0.5rem;
-        transform: translate(0, 100%);
+        color: $color-dark;
+      }
+    }
 
-        &__item {
-          padding: 0.5rem 1rem;
+    // .list__item
+    .seasons {
+      background-color: $color-light;
+      box-shadow: 0 0 0.25rem $color-dark;
+      display: none;
+      position: absolute;
+      text-align: left;
+      white-space: nowrap;
+      z-index: 100;
+      left: 0;
+      bottom: -0.5rem;
+      transform: translate(0, 100%);
 
-          &._current {
-            background-color: rgba($color-dark, 0.1);
-          }
+      &__item {
+        padding: 0.5rem 1rem;
+
+        &._current {
+          background-color: rgba($color-dark, 0.1);
         }
       }
     }

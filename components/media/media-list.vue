@@ -30,7 +30,7 @@
     </div>
 
     <div v-if="list.length">
-      <ul  class="list">
+      <ul class="list">
         <media-view
           v-for="media of listSlice"
           :key="media._id"
