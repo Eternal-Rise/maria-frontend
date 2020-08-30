@@ -128,7 +128,7 @@
       }
 
       .seasons {
-        background-color: $body-bg;
+        // background-color: $body-bg;
         box-shadow: 0 0 0.25rem $white;
         display: none;
         position: absolute;
@@ -197,8 +197,8 @@
 
       // .list__item-link
       &:visited {
-        border-bottom-color: $primary;
-        color: $primary;
+        border-bottom-color: $color-primary;
+        color: $color-primary;
       }
     }
   }

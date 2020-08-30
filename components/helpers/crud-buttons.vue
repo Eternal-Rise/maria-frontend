@@ -22,14 +22,10 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { BIcon, BIconPencil, BIconTrash } from 'bootstrap-vue';
 import { IUser, IMediaAny } from '~/helpers/interfaces';
 
 @Component({
   components: {
-    BIcon,
-    BIconPencil,
-    BIconTrash,
   },
 })
 export default class CrudButtons extends Vue {

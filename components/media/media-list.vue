@@ -61,13 +61,10 @@
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 import MediaView from '~/components/media/media-view.vue';
-import { BIcon, BIconPlus } from 'bootstrap-vue';
 import { IMediaDelete, IUser, IMediaAny } from '~/helpers/interfaces';
 
 @Component({
   components: {
-    BIcon,
-    BIconPlus,
     MediaView,
   },
 })

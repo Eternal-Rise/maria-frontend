@@ -1,18 +1,8 @@
-// Theming Bootstrap
-@import 'variables.scss';
-
-// BootstrapVue and its default variables
-@import 'bootstrap/scss/bootstrap';
-// BootstrapVue and its default variables
-@import 'bootstrap-vue/src/index.scss';
+@import '../../node_modules/@inkline/inkline/src/css/config/index.scss';
 
 @import 'variables.scss';
 @import 'typography.scss';
 @import 'base.scss';
-
-@import './reset/b-form-datepicker.scss';
-@import './reset/b-modal.scss';
-@import './reset/b-popover.scss';
 
 @import './components/list.scss';
 @import './components/list-header.scss';

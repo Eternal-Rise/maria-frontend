@@ -125,11 +125,11 @@ export default class Index extends Vue {
     if (i >= 0) {
       this.media[i].list = this.media[i].list.filter(m => m._id !== media._id);
 
-      this.$bvToast.toast(`You have deleted ${media.title}`, {
-        title: 'Success',
-        variant: 'success',
-        solid: true,
-      });
+      // this.$bvToast.toast(`You have deleted ${media.title}`, {
+      //   title: 'Success',
+      //   variant: 'success',
+      //   solid: true,
+      // });
     }
   }
 
@@ -164,7 +164,7 @@ export default class Index extends Vue {
   display: flex;
   &__bar {
     width: 100%;
-    background-color: $blue;
+    // background-color: $blue;
     transform-origin: left;
     transition: 1.8s cubic-bezier(0.53, 0.89, 0.73, 0.89);
   }
