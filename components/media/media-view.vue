@@ -1,5 +1,5 @@
 <template>
-  <li :class="['list__item', { _watched: media.watched }]">
+  <li :class="['list__item', { _watched: media.watched }, $inkline.config.variant]">
     <div class="list__item-block _title">
       <a
         v-if="media.link !== ''"
