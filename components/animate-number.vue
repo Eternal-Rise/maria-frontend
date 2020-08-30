@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component
 export default class AnimateNumber extends Vue {
@@ -25,7 +25,8 @@ export default class AnimateNumber extends Vue {
     return this.prefix + this.currentNumber + this.postfix;
   }
 
-  created() {
+  @Watch('number')
+  forceAnimation() {
     const interval = setInterval(() => {
       if (this.currentNumber >= this.number) clearInterval(interval);
       else this.currentNumber += 1;
