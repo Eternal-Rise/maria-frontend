@@ -22,6 +22,7 @@
       ]
     },
     "types": [
+      "@inkline/inkline",
       "@nuxt/types",
       "@nuxtjs/axios",
       "@types/node",

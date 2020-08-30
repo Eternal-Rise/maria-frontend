@@ -58,11 +58,8 @@ const config: Configuration = {
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://bootstrap-vue.js.org
-    ['bootstrap-vue/nuxt', {
-      bootstrapCSS: false,
-      bootstrapVueCSS: false,
-    }],
+    // Doc: https://inkline.io/docs/introduction/installation/nuxt
+    '@inkline/nuxt',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/auth',
     '@nuxtjs/axios',
@@ -103,12 +100,18 @@ const config: Configuration = {
     },
   },
 
-  styleResources: {
-    scss: ['./assets/styles/_variables.scss'],
+  inkline: {
+    config: {
+      variant: 'dark'
+    }
   },
 
   router: {
     middleware: ['auth'],
+  },
+
+  styleResources: {
+    scss: ['./node_modules/@inkline/inkline/src/css/config/index.scss', './assets/styles/_variables.scss'],
   },
   /*
   ** Build configuration

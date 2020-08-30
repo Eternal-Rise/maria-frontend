@@ -1,12 +1,13 @@
 <template>
-  <li :class="['list__item', { _watched: media.watched }]">
+  <li :class="['list__item', { _watched: media.watched }, $inkline.config.variant]">
     <div class="list__item-block _title">
-      <b-link
+      <a
         v-if="media.link !== ''"
         :href="media.link"
-        v-text="media.title"
-        class="list__item-link"
         :title="media.title"
+        class="list__item-link"
+        rel="noreferrer noopener"
+        v-text="media.title"
       />
       <span v-else class="list__item-link" v-text="media.title" :title="media.title" />
     </div>

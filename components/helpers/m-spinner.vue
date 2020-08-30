@@ -1,7 +1,7 @@
 <template>
   <div class="m-spinner">
     <div v-if="loading" class="m-spinner__wrapp">
-      <b-spinner variant="primary" />
+      <i-loader :variant="variant" />
     </div>
     <div :class="['m-spinner__content', { _loading: loading }]">
       <slot />
@@ -16,6 +16,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 export default class MSpinner extends Vue {
   @Prop({ required: true, type: Boolean })
   readonly loading!: boolean;
+
+  get variant() {
+    return this.$inkline.config.variant === 'light' ? 'dark' : 'light';
+  }
 }
 </script>
 

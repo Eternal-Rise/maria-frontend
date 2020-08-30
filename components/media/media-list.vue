@@ -1,48 +1,38 @@
 <template>
   <div>
-    <b-button-group class="w-100">
-      <b-button v-b-toggle="mediaType" class="w-100" variant="outline-primary">{{ title }}</b-button>
-      <b-button v-if="controls" :to="createLink" style="font-size: 1rem" variant="primary">
-        <b-icon icon="plus" />
-      </b-button>
-    </b-button-group>
-    <b-collapse :id="mediaType" class="pt-3">
-      <div v-if="list.length" class="list-header">
-        <div class="list-header__block _title">
-          <button
-            :class="['list-header__title', '_sorter', getSorterClass('title')]"
-            class=""
-            @click="handleSort('title')"
-          >
-            Title
-          </button>
-        </div>
-        <div class="list-header__block _duration">
-          <button
-            :class="['list-header__title', '_sorter', getSorterClass('duration')]"
-            class=""
-            @click="handleSort('duration')"
-          >
-            Duration
-          </button>
-        </div>
-        <div class="list-header__block _year">
-          <button
-            :class="['list-header__title', '_sorter', getSorterClass('year')]"
-            class=""
-            @click="handleSort('year')"
-          >
-            Year
-          </button>
-        </div>
-        <div class="list-header__block _genres">
-          <span class="list-header__title">Genres</span>
-        </div>
+    <div v-if="list.length" class="list-header">
+      <div class="list-header__block _title">
+        <button
+          :class="['list-header__title', '_sorter', getSorterClass('title')]"
+          class=""
+          @click="handleSort('title')"
+        >
+          Title
+        </button>
       </div>
+      <div class="list-header__block _duration">
+        <button
+          :class="['list-header__title', '_sorter', getSorterClass('duration')]"
+          class=""
+          @click="handleSort('duration')"
+        >
+          Duration
+        </button>
+      </div>
+      <div class="list-header__block _year">
+        <button :class="['list-header__title', '_sorter', getSorterClass('year')]" class="" @click="handleSort('year')">
+          Year
+        </button>
+      </div>
+      <div class="list-header__block _genres">
+        <span class="list-header__title">Genres</span>
+      </div>
+    </div>
 
-      <ul v-if="list.length" class="list">
+    <div v-if="list.length">
+      <ul class="list">
         <media-view
-          v-for="media of list"
+          v-for="media of listSlice"
           :key="media._id"
           :controls="controls"
           :media="media"
@@ -51,23 +41,21 @@
           @delete="handleDelete"
         />
       </ul>
-      <b-alert v-else class="mt-2 text-center" show>
-        {{ 'Your list is empty, my lord' }}
-      </b-alert>
-    </b-collapse>
+      <i-button v-if="listSlice.length < list.length" @click="slice++">Show more</i-button>
+    </div>
+    <i-alert v-else class="mt-2 text-center" show>
+      {{ 'Your list is empty, my lord' }}
+    </i-alert>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 import MediaView from '~/components/media/media-view.vue';
-import { BIcon, BIconPlus } from 'bootstrap-vue';
 import { IMediaDelete, IUser, IMediaAny } from '~/helpers/interfaces';
 
 @Component({
   components: {
-    BIcon,
-    BIconPlus,
     MediaView,
   },
 })
@@ -87,6 +75,8 @@ export default class MediaList extends Vue {
   @Prop({ default: '', required: true, type: String })
   mediaType!: string;
 
+  slice = 1;
+
   sort: any = {
     title: '',
     duration: '',
@@ -101,9 +91,9 @@ export default class MediaList extends Vue {
     }
   }
 
-  // get liType() {
-  //   return this.mediaType === 'anime' || this.mediaType === 'film' ? 'media-film' : 'media-serial';
-  // }
+  get listSlice() {
+    return this.list.slice(0, this.slice * 20);
+  }
 
   getSorterClass(key: string) {
     return this.sort[key] === 'ASC' ? '_top' : this.sort[key] === 'DESC' ? '_bottom' : 'f';
@@ -151,4 +141,16 @@ export default class MediaList extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.item.item {
+  position: static;
+
+  ::v-deep {
+    .header {
+      .icon {
+        position: static;
+      }
+    }
+  }
+}
+</style>

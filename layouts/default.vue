@@ -1,43 +1,63 @@
 <template>
-  <b-container :class="['d-flex', 'flex-column', 'vh', `${loggedIn ? 'py-3' : 'py-5'}`]">
-    <b-nav v-if="loggedIn" class="mb-5">
-      <b-nav-item :to="{ name: 'index' }">
-        <nuxt-logo :width="36" :height="20" class="mb-1" />
-        Maria
-      </b-nav-item>
-      <b-nav-item-dropdown id="nav" text="Create">
-        <b-dropdown-item :to="{ name: 'media-add', params: { media: 'anime' } }">
-          Anime
-        </b-dropdown-item>
-        <b-dropdown-item :to="{ name: 'media-add', params: { media: 'anime-serial' } }">
-          Anime Serial
-        </b-dropdown-item>
-        <b-dropdown-item :to="{ name: 'media-add', params: { media: 'film' } }">
-          Film
-        </b-dropdown-item>
-        <b-dropdown-item :to="{ name: 'media-add', params: { media: 'serial' } }">
-          Serial
-        </b-dropdown-item>
-        <b-dropdown-item :to="{ name: 'media-add', params: { media: 'other' } }">
-          Other
-        </b-dropdown-item>
-      </b-nav-item-dropdown>
-    </b-nav>
+  <i-layout>
+    <i-layout-header>
+      <client-only>
+        <i-nav v-if="loggedIn">
+          <i-nav-item :to="{ name: 'index' }">
+            <nuxt-logo :width="36" :height="20" />
+            Maria
+          </i-nav-item>
+          <i-dropdown>
+            <i-button>Create</i-button>
+            <i-dropdown-menu>
+              <i-dropdown-item :to="{ name: 'media-add', params: { media: 'anime' } }">
+                Anime
+              </i-dropdown-item>
+              <i-dropdown-item :to="{ name: 'media-add', params: { media: 'anime-serial' } }">
+                Anime Serial
+              </i-dropdown-item>
+              <i-dropdown-item :to="{ name: 'media-add', params: { media: 'film' } }">
+                Film
+              </i-dropdown-item>
+              <i-dropdown-item :to="{ name: 'media-add', params: { media: 'serial' } }">
+                Serial
+              </i-dropdown-item>
+              <i-dropdown-item :to="{ name: 'media-add', params: { media: 'other' } }">
+                Other
+              </i-dropdown-item>
+            </i-dropdown-menu>
+          </i-dropdown>
+        </i-nav>
+      </client-only>
+      <i-button :class="['theme-switcher', { _fixed: loggedIn }]" @click="switchTheme">
+        <i-icon :icon="theme" />
+      </i-button>
+    </i-layout-header>
 
-    <b-row align-h="center" class="mb-5">
-      <b-col cols="12" xl="10">
-        <nuxt />
-      </b-col>
-    </b-row>
+    <i-layout-content>
+      <i-container fluid>
+        <i-row center class="_padding-y-2">
+          <i-column xl="10">
+            <nuxt />
+          </i-column>
+        </i-row>
+      </i-container>
+    </i-layout-content>
 
-    <b-row v-if="loggedIn" align-h="center" style="margin-top: auto">
-      <b-col cols="12" md="6" xl="4">
-        <b-button @click="$auth.logout()" class="w-100">
-          Logout
-        </b-button>
-      </b-col>
-    </b-row>
-  </b-container>
+    <client-only>
+      <i-layout-footer v-if="loggedIn">
+        <i-container>
+          <i-row center>
+            <i-column lg="8">
+              <i-button block @click="$auth.logout()">
+                Logout
+              </i-button>
+            </i-column>
+          </i-row>
+        </i-container>
+      </i-layout-footer>
+    </client-only>
+  </i-layout>
 </template>
 
 <script lang="ts">
@@ -51,19 +71,37 @@ import NuxtLogo from '~/components/nuxt-logo.vue';
 })
 export default class Default extends Vue {
   get loggedIn(): boolean {
-    return this.$auth.loggedIn;
+    return this.$auth && this.$auth.loggedIn;
   }
 
-  getVariant(name: string): string {
-    const current = this.$route.name || '';
-
-    return new RegExp(`^${name}`).test(current) ? 'primary' : 'secondary';
+  get theme(): string {
+    return this.$inkline.config.variant;
   }
 
-  handleLogout(): void {
-    this.$auth.logout();
+  switchTheme() {
+    this.$inkline.config.variant = this.theme === 'light' ? 'dark' : 'light';
   }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.layout {
+  min-height: 100vh;
+
+  &-header {
+    position: relative;
+  }
+
+  .theme-switcher {
+    display: block !important;
+    margin: 0 auto;
+
+    &._fixed {
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+</style>

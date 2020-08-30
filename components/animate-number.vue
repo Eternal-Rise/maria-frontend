@@ -1,9 +1,9 @@
 <template>
-  <span v-text="displayNumber()" />
+  <span v-text="displayNumber" />
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 @Component
 export default class AnimateNumber extends Vue {
@@ -19,15 +19,16 @@ export default class AnimateNumber extends Vue {
   @Prop({ required: false, type: Number, default: 50 })
   speed!: number;
 
-  currentNumber = 1;
+  currentNumber = 0;
 
-  displayNumber() {
+  get displayNumber() {
     return this.prefix + this.currentNumber + this.postfix;
   }
 
-  created() {
+  @Watch('number')
+  forceAnimation() {
     const interval = setInterval(() => {
-      if (this.currentNumber === this.number) clearInterval(interval);
+      if (this.currentNumber >= this.number) clearInterval(interval);
       else this.currentNumber += 1;
     }, this.speed);
   }

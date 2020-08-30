@@ -5,7 +5,7 @@
   }
 
   &__label {
-    color: lighten($color: $blue, $amount: 20%);
+    // color: lighten($color: $blue, $amount: 20%);
     font-size: 0.8em;
   }
 
@@ -22,14 +22,14 @@
   }
 
   .grid {
-    background-color: $white;
-    border: 1px solid $white;
+    background-color: $color-white;
+    border: 1px solid $color-white;
     display: grid;
     gap: 1px;
     grid-template-columns: repeat(12, 1fr);
 
     &__tile {
-      background-color: $body-bg;
+      // background-color: $body-bg;
       line-height: 2.1;
       padding: 0 $spacer / 2;
 

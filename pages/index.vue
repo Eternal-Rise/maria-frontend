@@ -1,69 +1,64 @@
 <template>
   <m-spinner :loading="loading">
-    <b-row align-v="center" class="mb-3">
-      <b-col class="text-md-right text-center">
+    <i-row center middle class="_margin-bottom-2">
+      <i-column class="_text-right">
         Total viewed
-        <span style="font-size: 1.25em">
+        <span style="font-size: 1.25em;">
           <animate-number
-            v-if="statistic.totalViewed.days"
-            :number="statistic.totalViewed.days"
+            :number="statistic && statistic.totalViewed && statistic.totalViewed.days"
             :speed="100"
             postfix="d"
           />
           <animate-number
-            v-if="statistic.totalViewed.hours"
-            :number="statistic.totalViewed.hours"
+            :number="statistic && statistic.totalViewed && statistic.totalViewed.hours"
             :speed="50"
             postfix="h"
           />
           <animate-number
-            v-if="statistic.totalViewed.minutes"
-            :number="statistic.totalViewed.minutes"
+            :number="statistic && statistic.totalViewed && statistic.totalViewed.minutes"
             :speed="10"
             postfix="m"
           />
         </span>
-      </b-col>
-      <b-col cols="12" md="5" xl="5">
+      </i-column>
+      <i-column :md="5">
         <div class="progress">
           <div class="progress__bar" :style="{ transform: `scale(${viewedPercent}, 1)` }" />
         </div>
-      </b-col>
-      <b-col class="text-md-left text-center">
-        <span style="font-size: 1.25em">
+      </i-column>
+      <i-column class="_text-left">
+        <span style="font-size: 1.25em;">
           <animate-number
-            v-if="statistic.totalToView.days"
-            :number="statistic.totalToView.days"
+            :number="statistic && statistic.totalToView && statistic.totalToView.days"
             :speed="100"
             postfix="d"
           />
           <animate-number
-            v-if="statistic.totalToView.hours"
-            :number="statistic.totalToView.hours"
+            :number="statistic && statistic.totalToView && statistic.totalToView.hours"
             :speed="50"
             postfix="h"
           />
           <animate-number
-            v-if="statistic.totalToView.minutes"
-            :number="statistic.totalToView.minutes"
+            :number="statistic && statistic.totalToView && statistic.totalToView.minutes"
             :speed="10"
             postfix="m"
           />
         </span>
         Total to view
-      </b-col>
-    </b-row>
+      </i-column>
+    </i-row>
 
-    <media-list
-      v-for="item of media"
-      :key="item.mediaType"
-      :controls="loggedIn"
-      :list="item.list"
-      :media-type="item.mediaType"
-      :title="item.title"
-      class="mb-3"
-      @delete="handleDelete"
-    />
+    <i-tabs>
+      <i-tab v-for="item of media" :key="item.mediaType" :title="item.title">
+        <media-list
+          :controls="$auth.loggedIn"
+          :list="item.list"
+          :media-type="item.mediaType"
+          :title="item.title"
+          @delete="handleDelete"
+        />
+      </i-tab>
+    </i-tabs>
   </m-spinner>
 </template>
 
@@ -111,10 +106,6 @@ export default class Index extends Vue {
 
   viewedPercent = 0;
 
-  get loggedIn(): boolean {
-    return this.$auth.loggedIn;
-  }
-
   getMinutes(total: IStatistic): number {
     return total.days * 24 * 60 + total.hours * 60 + total.minutes;
   }
@@ -125,11 +116,11 @@ export default class Index extends Vue {
     if (i >= 0) {
       this.media[i].list = this.media[i].list.filter(m => m._id !== media._id);
 
-      this.$bvToast.toast(`You have deleted ${media.title}`, {
-        title: 'Success',
-        variant: 'success',
-        solid: true,
-      });
+      // this.$bvToast.toast(`You have deleted ${media.title}`, {
+      //   title: 'Success',
+      //   variant: 'success',
+      //   solid: true,
+      // });
     }
   }
 
@@ -161,12 +152,24 @@ export default class Index extends Vue {
 
 <style lang="scss" scoped>
 .progress {
+  background-color: $color-light;
+  border: 1px solid $color-dark;
   display: flex;
+
   &__bar {
+    height: $spacer;
     width: 100%;
-    background-color: $blue;
+    background-color: $color-primary;
     transform-origin: left;
     transition: 1.8s cubic-bezier(0.53, 0.89, 0.73, 0.89);
+  }
+}
+
+.tabs {
+  ::v-deep {
+    .header {
+      overflow: auto;
+    }
   }
 }
 </style>

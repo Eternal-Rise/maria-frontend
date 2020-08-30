@@ -1,7 +1,7 @@
 // .list__item
 .list-header {
-  background-color: $body-bg;
-  border-bottom: 4px solid $primary;
+  // background-color: $body-bg;
+  border-bottom: 4px solid $color-primary;
   display: flex;
   flex-wrap: wrap;
   font-weight: bold;
@@ -9,11 +9,11 @@
   padding: 0.5rem 0;
   text-transform: capitalize;
 
-  @media screen and (min-width: $md) {
+  @media (min-width: $md) {
     width: 100%;
   }
 
-  @media screen and (min-width: $xl) {
+  @media (min-width: $xl) {
     justify-content: initial;
   }
 
@@ -21,14 +21,14 @@
     box-sizing: border-box;
     line-height: 1.85;
 
-    @media screen and (min-width: $xl) {
+    @media (min-width: $xl) {
       &:not(:last-child) {
         margin-right: 1rem;
       }
     }
 
     &._title {
-      @media screen and (min-width: $xl) {
+      @media (min-width: $xl) {
         display: flex;
         justify-content: flex-end;
         width: 40%;
@@ -38,7 +38,7 @@
     &._duration,
     &._year,
     &._watch {
-      @media screen and (min-width: $xl) {
+      @media (min-width: $xl) {
         display: flex;
         justify-content: center;
         width: 12%;
@@ -49,11 +49,11 @@
       display: none;
       width: 50%;
 
-      @media screen and (min-width: $sm) {
+      @media (min-width: $sm) {
         width: initial;
       }
 
-      @media screen and (min-width: $xl) {
+      @media (min-width: $xl) {
         display: flex;
         justify-content: flex-start;
         margin-right: auto;
@@ -76,7 +76,7 @@
     transition: $dur;
     width: 100%;
 
-    @media screen and (min-width: $xl) {
+    @media (min-width: $xl) {
       width: initial;
     }
 
@@ -86,7 +86,7 @@
       // .list__item-sort
       &:focus,
       &:hover {
-        border-color: $white;
+        border-color: $color-white;
       }
 
       &::before,

@@ -1,36 +1,31 @@
 <template>
-  <b-button-group>
-    <b-button :to="editLink">
-      <b-icon icon="pencil" />
-    </b-button>
-    <b-button :id="`media-${id}`">
-      <b-icon icon="trash" />
-    </b-button>
+  <i-button-group>
+    <i-button :to="editLink">
+      <i-icon icon="code" />
+    </i-button>
+    <i-popover placement="top" variant="dark">
+      <i-button :id="`media-${id}`">
+        <i-icon icon="times" />
+      </i-button>
 
-    <b-popover :show.sync="popover" placement="bottom" :target="`media-${id}`" variant="danger">
-      <b-button-group class="w-100">
-        <b-button variant="danger" @click="handleDelete">
+      <i-button-group slot="body" block>
+        <i-button variant="danger" @click="handleDelete">
           Confirm
-        </b-button>
-        <b-button @click="popover = false">
+        </i-button>
+        <i-button @click="popover = false">
           Cancel
-        </b-button>
-      </b-button-group>
-    </b-popover>
-  </b-button-group>
+        </i-button>
+      </i-button-group>
+    </i-popover>
+  </i-button-group>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { BIcon, BIconPencil, BIconTrash } from 'bootstrap-vue';
 import { IUser, IMediaAny } from '~/helpers/interfaces';
 
 @Component({
-  components: {
-    BIcon,
-    BIconPencil,
-    BIconTrash,
-  },
+  components: {},
 })
 export default class CrudButtons extends Vue {
   @Prop({ required: true, type: String })
@@ -38,8 +33,6 @@ export default class CrudButtons extends Vue {
 
   @Prop({ required: true, type: String })
   mediaType!: IMediaAny;
-
-  popover: boolean = false;
 
   get deleteUrl() {
     return `/media/${this.mediaType}s/${this.id}`;
@@ -60,4 +53,12 @@ export default class CrudButtons extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.popover-wrapper {
+  ::v-deep {
+    .popover > .body {
+      padding: 1px;
+    }
+  }
+}
+</style>
