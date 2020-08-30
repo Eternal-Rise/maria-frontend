@@ -162,11 +162,11 @@ export default class AnimeForm extends Vue {
       data: this.preparedForm(),
     })
       .then(({ data }) => {
-        this.$bvToast.toast(`You added ${data.title} to watch list`, {
-          title: 'Success',
-          variant: 'success',
-          solid: true,
-        });
+        // this.$bvToast.toast(`You added ${data.title} to watch list`, {
+        //   title: 'Success',
+        //   variant: 'success',
+        //   solid: true,
+        // });
 
         const newForm: any = this.newForm();
 
@@ -188,11 +188,11 @@ export default class AnimeForm extends Vue {
       data: this.preparedForm(),
     })
       .then(({ data }: any) => {
-        this.$bvToast.toast(`You have update ${data.title}`, {
-          title: 'Success',
-          variant: 'success',
-          solid: true,
-        });
+        // this.$bvToast.toast(`You have update ${data.title}`, {
+        //   title: 'Success',
+        //   variant: 'success',
+        //   solid: true,
+        // });
       })
       .finally(() => {
         setTimeout(() => {

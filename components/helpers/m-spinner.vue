@@ -1,7 +1,7 @@
 <template>
   <div class="m-spinner">
     <div v-if="loading" class="m-spinner__wrapp">
-      <b-spinner variant="primary" />
+      <i-loader variant="light" />
     </div>
     <div :class="['m-spinner__content', { _loading: loading }]">
       <slot />
