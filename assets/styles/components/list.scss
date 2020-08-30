@@ -124,12 +124,14 @@
       }
     }
 
+    // .list__item
     &.dark {
       .seasons {
         color: $color-dark;
       }
     }
 
+    // .list__item
     .seasons {
       background-color: $color-light;
       box-shadow: 0 0 0.25rem $color-dark;
