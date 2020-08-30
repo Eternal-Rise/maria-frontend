@@ -1,10 +1,10 @@
 html,
 body {
-  @media screen and (min-width: $lg) {
+  @media (min-width: $lg) {
     font-size: 1.125rem;
   }
 
-  @media screen and (min-width: $xxl) {
+  @media (min-width: $xxl) {
     font-size: 1.25rem;
   }
 }

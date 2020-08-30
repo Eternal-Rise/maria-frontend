@@ -1,5 +1,5 @@
 <template>
-  <i-collapsible-item :title="title">
+  <div>
     <div v-if="list.length" class="list-header">
       <div class="list-header__block _title">
         <button
@@ -29,21 +29,24 @@
       </div>
     </div>
 
-    <ul v-if="list.length" class="list">
-      <media-view
-        v-for="media of list"
-        :key="media._id"
-        :controls="controls"
-        :media="media"
-        :media-type="mediaType"
-        :friend="friend"
-        @delete="handleDelete"
-      />
-    </ul>
+    <div v-if="list.length">
+      <ul  class="list">
+        <media-view
+          v-for="media of listSlice"
+          :key="media._id"
+          :controls="controls"
+          :media="media"
+          :media-type="mediaType"
+          :friend="friend"
+          @delete="handleDelete"
+        />
+      </ul>
+      <i-button v-if="listSlice.length < list.length" @click="slice++">Show more</i-button>
+    </div>
     <i-alert v-else class="mt-2 text-center" show>
       {{ 'Your list is empty, my lord' }}
     </i-alert>
-  </i-collapsible-item>
+  </div>
 </template>
 
 <script lang="ts">
@@ -72,6 +75,8 @@ export default class MediaList extends Vue {
   @Prop({ default: '', required: true, type: String })
   mediaType!: string;
 
+  slice = 1;
+
   sort: any = {
     title: '',
     duration: '',
@@ -86,9 +91,9 @@ export default class MediaList extends Vue {
     }
   }
 
-  // get liType() {
-  //   return this.mediaType === 'anime' || this.mediaType === 'film' ? 'media-film' : 'media-serial';
-  // }
+  get listSlice() {
+    return this.list.slice(0, this.slice * 20);
+  }
 
   getSorterClass(key: string) {
     return this.sort[key] === 'ASC' ? '_top' : this.sort[key] === 'DESC' ? '_bottom' : 'f';

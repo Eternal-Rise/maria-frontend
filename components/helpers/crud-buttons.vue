@@ -3,7 +3,7 @@
     <i-button :to="editLink">
       <i-icon icon="code" />
     </i-button>
-    <i-popover placement="bottom" variant="dark">
+    <i-popover placement="top" variant="dark">
       <i-button :id="`media-${id}`">
         <i-icon icon="times" />
       </i-button>

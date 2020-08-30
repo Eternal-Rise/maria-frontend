@@ -32,7 +32,7 @@
             <i-input-number v-model.number="form.year.value" :min="1950" :max="maxYear" :step="1" type="number" />
           </i-form-group>
 
-          <i-form-group>
+          <i-form-group class="_margin-bottom-1">
             <i-checkbox :schema="form.watched">
               Already watched?
             </i-checkbox>
@@ -158,6 +158,10 @@ export default class AnimeForm extends Vue {
           // });
 
           this.form = this.newForm();
+
+          this.$nextTick().then(() => {
+            this.formKey = this.formKey + Date.now();
+          });
         })
         .finally(() => {
           setTimeout(() => {
@@ -215,7 +219,7 @@ export default class AnimeForm extends Vue {
               this.form.set(key, { ...(this.schema as any)[key], value }, { instance: this });
             }
 
-            this.formKey += Date.now();
+            this.formKey = this.formKey + Date.now();
           }
         })
         .finally(() => {

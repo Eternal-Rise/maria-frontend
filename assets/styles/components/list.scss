@@ -1,5 +1,5 @@
 .list {
-  @media screen and (min-width: $md) {
+  @media (min-width: $md) {
     display: flex;
     flex-wrap: wrap;
   }
@@ -20,7 +20,7 @@
       background-color: rgba(#d9ebeb, 0.175);
     }
 
-    @media screen and (min-width: $md) {
+    @media (min-width: $md) {
       width: 50%;
 
       // .list__item
@@ -35,7 +35,7 @@
       }
     }
 
-    @media screen and (min-width: $xl) {
+    @media (min-width: $xl) {
       align-items: center;
       display: flex;
       width: 100%;
@@ -60,12 +60,7 @@
 
     // .list__item
     &._watched {
-      opacity: 0.25;
-      transition: $dur;
-
-      &:hover {
-        opacity: 1;
-      }
+      border-left: 8px solid $color-green;
     }
 
     // .list__item
@@ -74,7 +69,7 @@
       line-height: 1.85;
       position: relative;
 
-      @media screen and (min-width: $xl) {
+      @media (min-width: $xl) {
         &:not(:last-child) {
           margin-right: 1rem;
         }
@@ -88,6 +83,7 @@
         top: 50%;
         transform: translate(0, -50%);
         transition: $dur;
+        z-index: 1;
 
         &:hover {
           opacity: 1;
@@ -100,7 +96,7 @@
         margin-bottom: 0.5rem;
         text-align: center;
 
-        @media screen and (min-width: $xl) {
+        @media (min-width: $xl) {
           margin-bottom: 0;
           text-align: right;
           width: 40%;
@@ -111,7 +107,7 @@
       &._duration,
       &._year,
       &._watch {
-        @media screen and (min-width: $xl) {
+        @media (min-width: $xl) {
           display: inline-block;
           text-align: center;
           width: 12%;
@@ -120,7 +116,7 @@
 
       // .list__item-block
       &._genres {
-        @media screen and (min-width: $xl) {
+        @media (min-width: $xl) {
           // align with btn -sort._genres
           margin-right: auto;
           padding-left: 0.5rem;
@@ -155,7 +151,7 @@
       min-width: 4.4em;
       text-align: right;
 
-      @media screen and (min-width: $xl) {
+      @media (min-width: $xl) {
         display: none;
       }
     }
@@ -181,13 +177,13 @@
 
         // .list__item-link
         &:hover {
-          border-bottom-color: $color-white;
-          color: $color-white;
+          border-bottom-color: $color-secondary;
+          color: $color-secondary;
           text-decoration: none;
         }
       }
 
-      @media screen and (min-width: $xl) {
+      @media (min-width: $xl) {
         margin-left: auto;
         overflow: hidden;
         text-overflow: ellipsis;
