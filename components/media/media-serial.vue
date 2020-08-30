@@ -188,7 +188,9 @@ export default class AnimeForm extends Vue {
           //   solid: true,
           // });
 
-          this.form = this.newForm();
+          this.$nextTick().then(() => {
+            this.formKey = this.formKey + Date.now();
+          });
         })
         .finally(() => {
           setTimeout(() => {
@@ -248,7 +250,7 @@ export default class AnimeForm extends Vue {
               this.form.set(key, { ...(this.schema as any)[key], value }, { instance: this });
             }
 
-            this.formKey += Date.now();
+            this.formKey = this.formKey + Date.now();
           }
         })
         .finally(() => {

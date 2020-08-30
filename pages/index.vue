@@ -48,18 +48,17 @@
       </i-column>
     </i-row>
 
-    <i-collapsible>
-      <media-list
-        v-for="item of media"
-        :key="item.mediaType"
-        :controls="$auth.loggedIn"
-        :list="item.list"
-        :media-type="item.mediaType"
-        :title="item.title"
-        class="mb-3"
-        @delete="handleDelete"
-      />
-    </i-collapsible>
+    <i-tabs>
+      <i-tab v-for="item of media" :key="item.mediaType" :title="item.title">
+        <media-list
+          :controls="$auth.loggedIn"
+          :list="item.list"
+          :media-type="item.mediaType"
+          :title="item.title"
+          @delete="handleDelete"
+        />
+      </i-tab>
+    </i-tabs>
   </m-spinner>
 </template>
 
@@ -163,6 +162,14 @@ export default class Index extends Vue {
     background-color: $color-primary;
     transform-origin: left;
     transition: 1.8s cubic-bezier(0.53, 0.89, 0.73, 0.89);
+  }
+}
+
+.tabs {
+  ::v-deep {
+    .header {
+      overflow: auto;
+    }
   }
 }
 </style>
