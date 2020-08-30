@@ -128,8 +128,8 @@
       }
 
       .seasons {
-        // background-color: $body-bg;
-        box-shadow: 0 0 0.25rem $white;
+        background-color: $color-light;
+        box-shadow: 0 0 0.25rem $color-dark;
         display: none;
         position: absolute;
         text-align: left;
@@ -143,7 +143,7 @@
           padding: 0.5rem 1rem;
 
           &._current {
-            background-color: rgba($white, 0.1);
+            background-color: rgba($color-dark, 0.1);
           }
         }
       }
@@ -171,18 +171,18 @@
       width: 100%;
 
       &[href] {
-        border-bottom-color: $white;
+        border-bottom-color: $color-white;
 
         // .list__item-link
         &:focus {
-          border-color: $white;
+          border-color: $color-white;
           text-decoration: none;
         }
 
         // .list__item-link
         &:hover {
-          border-bottom-color: $white;
-          color: $white;
+          border-bottom-color: $color-white;
+          color: $color-white;
           text-decoration: none;
         }
       }

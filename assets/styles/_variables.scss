@@ -1,4 +1,4 @@
-$white: #fff;
+// $color-white: #fff;
 // $black: #1d1a25;
 
 // $blue: #4ddfbf;
@@ -13,7 +13,7 @@ $white: #fff;
 // // $cyan:    #17a2b8 !default;
 
 // $body-bg: #345;
-// $body-color: $white;
+// $body-color: $color-white;
 
 // $grid-breakpoints: (
 //   xs: 0,
@@ -56,3 +56,36 @@ $xxl: 150rem;
 
 $spacer: 1rem;
 $dur: 0.25s;
+
+
+$breakpoints-xs: $xs !default;
+$breakpoints-sm: $sm !default;
+$breakpoints-md: $md !default;
+$breakpoints-lg: $lg !default;
+$breakpoints-xl: $xl !default;
+$breakpoints-xxl: $xxl !default;
+
+$breakpoints: (
+    'xs': $breakpoints-xs,
+    'sm': $breakpoints-sm,
+    'md': $breakpoints-md,
+    'lg': $breakpoints-lg,
+    'xl': $breakpoints-xl,
+    'xxl': $breakpoints-xxl,
+) !default;
+
+$gutter-xs: 1.5rem !default;
+$gutter-sm: 1.6rem !default;
+$gutter-md: 1.75rem !default;
+$gutter-lg: 1.9rem !default;
+$gutter-xl: 2rem !default;
+$gutter-xxl: 2.2rem !default;
+
+$gutter: (
+    'xs': $gutter-xs,
+    'sm': $gutter-sm,
+    'md': $gutter-md,
+    'lg': $gutter-lg,
+    'xl': $gutter-xl,
+    'xxl': $gutter-xxl,
+) !default;

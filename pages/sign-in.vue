@@ -1,10 +1,10 @@
 <template>
   <div>
-    <b-row class="justify-content-center py-5">
-      <b-col class="col-md-8 col-lg-6 col-xxl-3 col-xxxl-3">
+    <i-row center class="_padding-y-5">
+      <i-column :md="8" :lg="6" :xl="4">
         <m-sign-in />
-      </b-col>
-    </b-row>
+      </i-column>
+    </i-row>
   </div>
 </template>
 
