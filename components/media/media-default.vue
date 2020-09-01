@@ -1,7 +1,7 @@
 <template>
   <i-row center>
     <i-column md="10" lg="8" xl="6">
-      <m-spinner :loading="loading">
+      <m-spinner v-if="addNew" :loading="loading">
         <i-form v-model="form" @submit.prevent="handleSubmit" :key="formKey">
           <i-form-group>
             <i-form-label>Title</i-form-label>
@@ -45,6 +45,7 @@
           </i-row>
         </i-form>
       </m-spinner>
+      <i-button v-else @click="addNew = true">Add more?</i-button>
     </i-column>
   </i-row>
 </template>
@@ -67,6 +68,7 @@ const maxYear = (): number => {
   },
 })
 export default class AnimeForm extends Vue {
+  addNew = true;
   loading: boolean = false;
   genres: string[] = GENRES;
   seasons = 1;
@@ -151,17 +153,16 @@ export default class AnimeForm extends Vue {
         data: this.preparedForm(),
       })
         .then(({ data }) => {
-          // this.$bvToast.toast(`You added ${data.title} to watch list`, {
-          //   title: 'Success',
-          //   variant: 'success',
-          //   solid: true,
-          // });
 
-          this.form = this.newForm();
+          setTimeout(() => {
+            this.form = this.newForm();
+            this.addNew = false;
 
-          this.$nextTick().then(() => {
-            this.formKey = this.formKey + Date.now();
-          });
+            this.$nextTick().then(() => {
+              this.formKey = this.formKey + Date.now();
+            });
+          }, 200);
+
         })
         .finally(() => {
           setTimeout(() => {
@@ -178,11 +179,7 @@ export default class AnimeForm extends Vue {
       data: this.preparedForm(),
     })
       .then(({ data }: any) => {
-        // this.$bvToast.toast(`You have update ${data.title}`, {
-        //   title: 'Success',
-        //   variant: 'success',
-        //   solid: true,
-        // });
+        //
       })
       .finally(() => {
         setTimeout(() => {
