@@ -4,7 +4,7 @@ import { Configuration } from '@nuxt/types';
 const isDev = process.env.NODE_ENV === 'development';
 
 const config: Configuration = {
-  export: {
+  generate: {
     fallback: true,
   },
 
