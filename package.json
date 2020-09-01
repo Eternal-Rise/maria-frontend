@@ -9,7 +9,7 @@
     "build": "nuxt-ts build",
     "deploy": "bash deploy.sh",
     "dev": "nuxt-ts",
-    "generate": "npm run build && nuxt-ts export",
+    "generate": "nuxt-ts generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "start": "nuxt-ts start",
     "test": "jest"
