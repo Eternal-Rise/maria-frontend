@@ -12,12 +12,12 @@
     // ORDER IS IMPORTANT HERE. First - even, odd. Then @media
     // .list__item
     &:nth-child(even) {
-      background-color: rgba(#d9ebeb, 0.1);
+      background-color: rgba($color-teal, 0.1);
     }
 
     // .list__item
     &:nth-child(odd) {
-      background-color: rgba(#d9ebeb, 0.175);
+      background-color: rgba($color-teal, 0.175);
     }
 
     @media (min-width: $md) {
@@ -42,12 +42,12 @@
 
       // .list__item
       &:nth-child(even) {
-        background-color: rgba(#d9ebeb, 0.1);
+        background-color: rgba($color-teal, 0.1);
       }
 
       // .list__item
       &:nth-child(odd) {
-        background-color: rgba(#d9ebeb, 0.175);
+        background-color: rgba($color-teal, 0.175);
       }
     }
 
@@ -129,6 +129,20 @@
       .seasons {
         color: $color-dark;
       }
+
+      .list__item-link {
+        &[href] {
+          &:hover {
+            color: $color-green;
+            border-bottom-color: $color-green;
+          }
+
+          &:focus {
+            border-color: $color-green;
+            text-decoration: none;
+          }
+        }
+      }
     }
 
     // .list__item
@@ -179,7 +193,7 @@
 
         // .list__item-link
         &:focus {
-          border-color: $color-white;
+          border-color: $color-secondary;
           text-decoration: none;
         }
 
